@@ -273,6 +273,17 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/btnLimpiarCarrito"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:backgroundTint="#D32F2F"
+                android:text="Limpiar"
+                android:textStyle="bold"
+                android:textSize="14sp"
+                android:layout_marginEnd="8dp"
+                app:cornerRadius="12dp"/>
+
+            <Button
                 android:id="@+id/btnCobrar"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"

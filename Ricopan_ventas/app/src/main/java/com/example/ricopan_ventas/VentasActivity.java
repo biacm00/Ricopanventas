@@ -24,9 +24,10 @@ import java.util.Map;
 public class VentasActivity extends AppCompatActivity {
 
     // 1. VARIABLES GLOBALES DE LA PANTALLA
-    Button btnCobrar, btnAgregarProducto, btnCierreCaja, btnCerrarSesion, btnImportarExcel;
+    Button btnCobrar, btnLimpiarCarrito, btnAgregarProducto, btnCierreCaja, btnCerrarSesion, btnImportarExcel;
     TextView tvTotal, tvTituloRol;
     LinearLayout llAdminPanel, llListaProductos;
+    androidx.cardview.widget.CardView llBottomCart;
     EditText etBuscar;
 
     double totalPagar = 0.0;
@@ -69,16 +70,19 @@ public class VentasActivity extends AppCompatActivity {
         configurarFiltrosCategoria();
         cargarCatalogoFirebase();
         configurarBotonCobro();
+        configurarBotonLimpiarCarrito();
         configurarBotonCerrarSesion();
     }
 
     // 3. MÉTODOS SEPARADOS (FÁCILES DE EXPLICAR)
     private void inicializarVistasYFirebase() {
         btnCobrar = findViewById(R.id.btnCobrar);
+        btnLimpiarCarrito = findViewById(R.id.btnLimpiarCarrito);
         btnCerrarSesion = findViewById(R.id.btnCerrarSesion);
         tvTotal = findViewById(R.id.tvTotal);
         tvTituloRol = findViewById(R.id.tvTituloRol);
         llAdminPanel = findViewById(R.id.llAdminPanel);
+        llBottomCart = findViewById(R.id.llBottomCart);
         btnAgregarProducto = findViewById(R.id.btnAgregarProducto);
         btnImportarExcel = findViewById(R.id.btnImportarExcel);
         btnCierreCaja = findViewById(R.id.btnCierreCaja);
@@ -219,11 +223,17 @@ public class VentasActivity extends AppCompatActivity {
             tvTituloRol.setText("RICO PAN");
         }
 
-        // Mostrar u ocultar botones exclusivos del Administrador
+        // Mostrar u ocultar controles según el rol (Administrador vs Vendedor)
         if (esAdmin) {
             llAdminPanel.setVisibility(View.VISIBLE);
+            if (llBottomCart != null) {
+                llBottomCart.setVisibility(View.GONE); // El administrador no simula ventas
+            }
         } else {
             llAdminPanel.setVisibility(View.GONE);
+            if (llBottomCart != null) {
+                llBottomCart.setVisibility(View.VISIBLE); // El vendedor sí realiza ventas
+            }
         }
     }
 
@@ -480,6 +490,27 @@ public class VentasActivity extends AppCompatActivity {
                 Toast.makeText(this, "El carrito está vacío", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void configurarBotonLimpiarCarrito() {
+        if (btnLimpiarCarrito != null) {
+            btnLimpiarCarrito.setOnClickListener(v -> {
+                if (totalPagar > 0) {
+                    new AlertDialog.Builder(this)
+                            .setTitle("Limpiar Carrito")
+                            .setMessage("¿Deseas vaciar el carrito y reiniciar la venta actual?")
+                            .setPositiveButton("Sí, limpiar", (dialog, which) -> {
+                                totalPagar = 0.0;
+                                tvTotal.setText("S/. 0.00");
+                                Toast.makeText(this, "Carrito vaciado", Toast.LENGTH_SHORT).show();
+                            })
+                            .setNegativeButton("Cancelar", null)
+                            .show();
+                } else {
+                    Toast.makeText(this, "El carrito ya está vacío", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     // ==========================================

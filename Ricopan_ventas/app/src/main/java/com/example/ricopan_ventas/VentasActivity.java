@@ -136,20 +136,28 @@ public class VentasActivity extends AppCompatActivity {
             ((Button) v).setTextColor(Color.WHITE);
 
             int id = v.getId();
+            // Clasificación precisa según lo solicitado por el usuario para la presentación
             if (id == R.id.btnFiltroPanaderia) {
-                filtrarPorCategoria("pan", "panaderia", "panadería", "frances");
+                // Panadería: incluye panes, tostadas, petipán, hamburguesa, etc.
+                filtrarPorCategoria("pan", "panaderia", "panadería", "frances", "tostada", "petipán", "petipan", "hamburguesa", "coliza", "caracol", "yema", "ciabatta", "carioca", "manteca", "integral", "maíz");
             } else if (id == R.id.btnFiltroPasteleria) {
-                filtrarPorCategoria("pastel", "pasteleria", "pastelería", "torta", "milhojas", "chocolate", "dulce");
+                // Bocaditos y Pastelería: empanadas, alfajores, milhojas, donas, churros, cono, caramanduca
+                filtrarPorCategoria("pastel", "pasteleria", "pastelería", "torta", "milhojas", "chocolate", "dulce", "bocadito", "empanada", "alfajor", "cono", "caramanduca", "dona", "churro");
             } else if (id == R.id.btnFiltroAbarrotes) {
-                filtrarPorCategoria("abarrote", "abarrotes", "azucar", "aceite", "arroz");
+                // Bebidas y otros abarrotes: gaseosas, agua, jugos, refrescos, azúcar, huevos, atún, papel
+                filtrarPorCategoria("gaseosa", "agua", "kola real", "kr", "loa", "kris", "generade", "oro", "fruvi", "zuko", "jugo", "refresco", "azucar", "azúcar", "huevo", "atún", "papel", "conserva");
             } else if (id == R.id.btnFiltroCafes) {
-                filtrarPorCategoria("caf", "cafe", "cafés", "infusion", "bebida");
+                // Cafés e Infusiones: café, manzanilla, té, anís, hierba luisa, cocoa, milo
+                filtrarPorCategoria("caf", "cafe", "cafés", "infusion", "infusión", "manzanilla", "té", "te", "anís", "anis", "hierba luisa", "cocoa", "milo");
             } else if (id == R.id.btnFiltroBocaditos) {
-                filtrarPorCategoria("bocad", "bocadito", "bocaditos", "empanada");
+                // Se mantiene como filtro rápido de Bocaditos
+                filtrarPorCategoria("bocad", "bocadito", "bocaditos", "empanada", "alfajor", "cono", "milhojas");
             } else if (id == R.id.btnFiltroEmbutidos) {
-                filtrarPorCategoria("embut", "embutido", "salchicha", "pate", "paté", "jamonada", "mortadela", "chorizo", "hot dog", "suiza");
+                // Embutidos: salchichas, jamonadas, paté, chorizo, hot dog, chicharrón
+                filtrarPorCategoria("embut", "embutido", "salchicha", "pate", "paté", "jamonada", "mortadela", "chorizo", "hot dog", "suiza", "chicharrón", "fiambre");
             } else if (id == R.id.btnFiltroLacteos) {
-                filtrarPorCategoria("lacteo", "lácteo", "queso", "yogurt", "yogurts");
+                // Lácteos y Quesos: leche, yogurt, queso, mantequilla, margarina, manjar
+                filtrarPorCategoria("lacteo", "lácteo", "queso", "yogurt", "yogurts", "leche", "mantequilla", "margarina", "manjar");
             }
         };
 

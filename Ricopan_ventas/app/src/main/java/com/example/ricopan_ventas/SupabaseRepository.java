@@ -110,7 +110,26 @@ public class SupabaseRepository {
     // 3. Registrar Arqueo / Cierre de Caja en Supabase
     public static void registrarArqueo(Map<String, Object> arqueoData, SupabaseCallback<Boolean> callback) {
         String url = SupabaseConfig.SUPABASE_URL + "/rest/v1/arqueos";
-        String jsonBody = gson.toJson(arqueoData);
+        
+        Map<String, Object> cleanData = new HashMap<>();
+        if (arqueoData.containsKey("totalEsperado")) {
+            cleanData.put("total_esperado", arqueoData.get("totalEsperado"));
+            cleanData.put("totalesperado", arqueoData.get("totalEsperado"));
+        }
+        if (arqueoData.containsKey("efectivoFisico")) {
+            cleanData.put("efectivo_fisico", arqueoData.get("efectivoFisico"));
+            cleanData.put("efectivofisico", arqueoData.get("efectivoFisico"));
+        }
+        if (arqueoData.containsKey("diferencia")) {
+            cleanData.put("diferencia", arqueoData.get("diferencia"));
+        }
+        for (Map.Entry<String, Object> entry : arqueoData.entrySet()) {
+            if (!cleanData.containsKey(entry.getKey())) {
+                cleanData.put(entry.getKey(), entry.getValue());
+            }
+        }
+
+        String jsonBody = gson.toJson(cleanData.isEmpty() ? arqueoData : cleanData);
 
         RequestBody body = RequestBody.create(jsonBody, JSON);
         Request request = new Request.Builder()
@@ -128,10 +147,12 @@ public class SupabaseRepository {
             }
 
             @Override
-            public void onResponse(Call call, Response response) {
+            public void onResponse(Call call, Response response) throws IOException {
                 if (response.isSuccessful()) {
                     mainHandler.post(() -> callback.onSuccess(true));
                 } else {
+                    String errorBody = response.body() != null ? response.body().string() : "";
+                    android.util.Log.e("Supabase", "Error al registrar arqueo (" + response.code() + "): " + errorBody);
                     mainHandler.post(() -> callback.onError("Error de servidor (" + response.code() + ")"));
                 }
             }

@@ -92,14 +92,21 @@ public class CierreCajaActivity extends AppCompatActivity {
     private void configurarBotones() {
         // Botón de Cierre de Caja
         btnConfirmarCierre.setOnClickListener(v -> {
-            String fisicoStr = etEfectivoFisico.getText().toString().trim();
+            String fisicoStr = etEfectivoFisico.getText().toString().trim().replace(",", ".");
 
             if (fisicoStr.isEmpty()) {
                 Toast.makeText(this, "Ingrese el dinero físico contado en la gaveta", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            double efectivoFisico = Double.parseDouble(fisicoStr);
+            double efectivoFisico;
+            try {
+                efectivoFisico = Double.parseDouble(fisicoStr);
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Ingrese un monto válido", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             double diferencia = efectivoFisico - totalGeneral;
 
             Map<String, Object> reporte = new HashMap<>();

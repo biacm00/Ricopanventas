@@ -159,14 +159,20 @@ public class CierreCajaActivity extends AppCompatActivity {
 
         document.finishPage(page);
 
-        File file = new File(getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS), "Reporte_RicoPan.pdf");
+        File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
+        if (dir != null && !dir.exists()) {
+            dir.mkdirs();
+        }
+        File file = new File(dir, "Reporte_RicoPan.pdf");
 
         try {
-            document.writeTo(new FileOutputStream(file));
-            Toast.makeText(this, "PDF Guardado exitosamente en tus Documentos", Toast.LENGTH_LONG).show();
+            FileOutputStream fos = new FileOutputStream(file);
+            document.writeTo(fos);
+            fos.close();
+            Toast.makeText(this, "PDF Guardado en: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
         } catch (IOException e) {
             e.printStackTrace();
-            Toast.makeText(this, "Error al crear el PDF", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error al crear el PDF: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
         document.close();

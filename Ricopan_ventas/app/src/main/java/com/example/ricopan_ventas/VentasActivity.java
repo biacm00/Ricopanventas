@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -474,42 +475,70 @@ public class VentasActivity extends AppCompatActivity {
     }
 
     // ==========================================
-    // 4. GENERADOR VISUAL (Dibuja los productos)
+    // 4. GENERADOR VISUAL (Dibuja los productos con imagen real o emoji de respaldo)
     // ==========================================
     private void agregarProductoVista(String idProducto, String nombre, double precio, long stock, String categoria, String imagen) {
+        // Contenedor principal de la tarjeta de producto (CardView)
         androidx.cardview.widget.CardView cardContainer = new androidx.cardview.widget.CardView(this);
         LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
         cardParams.setMargins(0, 0, 0, 16);
         cardContainer.setLayoutParams(cardParams);
-        cardContainer.setRadius(28); // ~14dp
+        cardContainer.setRadius(28); // Bordes redondeados
         cardContainer.setCardElevation(6);
         cardContainer.setCardBackgroundColor(Color.WHITE);
 
+        // Layout interno horizontal para alinear imagen y textos
         LinearLayout card = new LinearLayout(this);
         card.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         card.setPadding(24, 20, 24, 20);
         card.setOrientation(LinearLayout.HORIZONTAL);
         card.setGravity(Gravity.CENTER_VERTICAL);
 
-        // Miniatura / Ícono visual rápido
-        TextView tvThumb = new TextView(this);
-        String icono = "🍞";
-        String catL = (categoria != null ? categoria.toLowerCase() : "");
-        if (catL.contains("pastel") || catL.contains("torta") || catL.contains("dulce")) icono = "🍰";
-        else if (catL.contains("abarrote") || catL.contains("azúcar") || catL.contains("azucar")) icono = "🛒";
-        else if (catL.contains("café") || catL.contains("cafe") || catL.contains("bebida") || catL.contains("infusión")) icono = "☕";
-        else if (catL.contains("bocad")) icono = "🥐";
-        else if (catL.contains("chorizo") || catL.contains("embutido") || catL.contains("jamonada")) icono = "🌭";
+        // --- GESTIÓN DE IMAGEN DEL PRODUCTO (URL real o Icono de respaldo) ---
+        if (imagen != null && !imagen.trim().isEmpty() && imagen.startsWith("http")) {
+            // Si el producto tiene una URL de imagen válida (como la del Excel), creamos un ImageView
+            ImageView ivProduct = new ImageView(this);
+            LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(110, 110);
+            imgParams.setMargins(0, 0, 20, 0);
+            ivProduct.setLayoutParams(imgParams);
+            ivProduct.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            card.addView(ivProduct);
 
-        tvThumb.setText(icono);
-        tvThumb.setTextSize(26);
-        tvThumb.setGravity(Gravity.CENTER);
-        LinearLayout.LayoutParams thumbParams = new LinearLayout.LayoutParams(110, 110);
-        thumbParams.setMargins(0, 0, 20, 0);
-        tvThumb.setLayoutParams(thumbParams);
-        card.addView(tvThumb);
+            // Carga asíncrona de la imagen en segundo plano para no congelar la app
+            new Thread(() -> {
+                try {
+                    java.net.URL url = new java.net.URL(imagen);
+                    android.graphics.Bitmap bitmap = android.graphics.BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                    if (bitmap != null) {
+                        runOnUiThread(() -> ivProduct.setImageBitmap(bitmap));
+                    }
+                } catch (Exception e) {
+                    // Si falla la red, no hacemos nada y se queda en blanco
+                }
+            }).start();
+        } else {
+            // Si no hay URL, mostramos un icono/emoji representativo según su categoría
+            TextView tvThumb = new TextView(this);
+            String icono = "🍞";
+            String catL = (categoria != null ? categoria.toLowerCase() : "");
+            if (catL.contains("pastel") || catL.contains("torta") || catL.contains("dulce")) icono = "🍰";
+            else if (catL.contains("abarrote") || catL.contains("azúcar") || catL.contains("azucar")) icono = "🛒";
+            else if (catL.contains("café") || catL.contains("cafe") || catL.contains("bebida") || catL.contains("infusión")) icono = "☕";
+            else if (catL.contains("bocad")) icono = "🥐";
+            else if (catL.contains("chorizo") || catL.contains("embutido") || catL.contains("jamonada") || catL.contains("salchicha")) icono = "🌭";
+            else if (catL.contains("queso") || catL.contains("lacteo") || catL.contains("yogurt")) icono = "🧀";
 
+            tvThumb.setText(icono);
+            tvThumb.setTextSize(26);
+            tvThumb.setGravity(Gravity.CENTER);
+            LinearLayout.LayoutParams thumbParams = new LinearLayout.LayoutParams(110, 110);
+            thumbParams.setMargins(0, 0, 20, 0);
+            tvThumb.setLayoutParams(thumbParams);
+            card.addView(tvThumb);
+        }
+
+        // Layout vertical para Nombre, Precio y Stock del producto
         LinearLayout textLayout = new LinearLayout(this);
         textLayout.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         textLayout.setOrientation(LinearLayout.VERTICAL);

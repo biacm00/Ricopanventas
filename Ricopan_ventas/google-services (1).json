@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "224319069841",
+    "project_id": "ricopanventas-ccc52",
+    "storage_bucket": "ricopanventas-ccc52.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:224319069841:android:40791ca4bc8e596ad0e930",
+        "android_client_info": {
+          "package_name": "com.example.ricopan_ventas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBw57PWPKJr3Bk-qjIu3mJYMKS-x9puEwQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

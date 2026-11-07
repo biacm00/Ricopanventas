@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FAF8F5">
+
+    <!-- Encabezado con Buscador y Filtros -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/llHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="6dp"
+        app:cardCornerRadius="0dp"
+        app:cardBackgroundColor="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="12dp">
+
+                <TextView
+                    android:id="@+id/tvTituloRol"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="RICO PAN"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="#8B4513"
+                    android:letterSpacing="0.03"/>
+
+                <Button
+                    android:id="@+id/btnCerrarSesion"
+                    android:layout_width="wrap_content"
+                    android:layout_height="38dp"
+                    android:text="Cerrar Sesión"
+                    android:textSize="12sp"
+                    android:backgroundTint="#D32F2F"
+                    android:textColor="@android:color/white"
+                    app:cornerRadius="10dp"/>
+            </LinearLayout>
+
+            <!-- Buscador Estilizado -->
+            <EditText
+                android:id="@+id/etBuscar"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_input_field"
+                android:hint="Buscar por nombre o código..."
+                android:paddingHorizontal="16dp"
+                android:inputType="text"
+                android:textSize="14sp"
+                android:layout_marginBottom="12dp"/>
+
+            <!-- Filtros por Categoría -->
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btnFiltroTodos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="Todos"
+                        android:textSize="12sp"
+                        android:textStyle="bold"
+                        android:backgroundTint="#8B4513"
+                        android:textColor="@android:color/white"
+                        android:layout_marginEnd="8dp"
+                        app:cornerRadius="18dp"/>
+
+                    <Button
+                        android:id="@+id/btnFiltroPanaderia"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="Panadería"
+                        android:textSize="12sp"
+                        android:backgroundTint="#EFEBE6"
+                        android:textColor="#333333"
+                        android:layout_marginEnd="8dp"
+                        app:cornerRadius="18dp"/>
+
+                    <Button
+                        android:id="@+id/btnFiltroPasteleria"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="Pastelería"
+                        android:textSize="12sp"
+                        android:backgroundTint="#EFEBE6"
+                        android:textColor="#333333"
+                        android:layout_marginEnd="8dp"
+                        app:cornerRadius="18dp"/>
+
+                    <Button
+                        android:id="@+id/btnFiltroAbarrotes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="Abarrotes"
+                        android:textSize="12sp"
+                        android:backgroundTint="#EFEBE6"
+                        android:textColor="#333333"
+                        android:layout_marginEnd="8dp"
+                        app:cornerRadius="18dp"/>
+
+                    <Button
+                        android:id="@+id/btnFiltroCafes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="Cafés"
+                        android:textSize="12sp"
+                        android:backgroundTint="#EFEBE6"
+                        android:textColor="#333333"
+                        android:layout_marginEnd="8dp"
+                        app:cornerRadius="18dp"/>
+
+                    <Button
+                        android:id="@+id/btnFiltroBocaditos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="Bocaditos"
+                        android:textSize="12sp"
+                        android:backgroundTint="#EFEBE6"
+                        android:textColor="#333333"
+                        android:layout_marginEnd="8dp"
+                        app:cornerRadius="18dp"/>
+
+                    <Button
+                        android:id="@+id/btnFiltroEmbutidos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="Embutidos"
+                        android:textSize="12sp"
+                        android:backgroundTint="#EFEBE6"
+                        android:textColor="#333333"
+                        android:layout_marginEnd="8dp"
+                        app:cornerRadius="18dp"/>
+
+                    <Button
+                        android:id="@+id/btnFiltroLacteos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="36dp"
+                        android:text="Lácteos"
+                        android:textSize="12sp"
+                        android:backgroundTint="#EFEBE6"
+                        android:textColor="#333333"
+                        app:cornerRadius="18dp"/>
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- PANEL EXCLUSIVO PARA ADMINISTRADOR (Oculto por defecto) -->
+            <LinearLayout
+                android:id="@+id/llAdminPanel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="12dp"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/btnAgregarProducto"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:text="+ Producto"
+                    android:backgroundTint="#FF9800"
+                    android:layout_marginEnd="6dp"
+                    app:cornerRadius="10dp"/>
+
+                <Button
+                    android:id="@+id/btnImportarExcel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.2"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:text="Cargar Excel"
+                    android:backgroundTint="#2E7D32"
+                    android:layout_marginEnd="6dp"
+                    app:cornerRadius="10dp"/>
+
+                <Button
+                    android:id="@+id/btnCierreCaja"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:text="Cierre Final"
+                    android:backgroundTint="#D32F2F"
+                    app:cornerRadius="10dp"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Lista de Productos -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/llHeader"
+        android:layout_above="@id/llBottomCart"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:id="@+id/llListaProductos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Barra Inferior del Carrito Flotante -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/llBottomCart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:cardBackgroundColor="#2E231F"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="10dp"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginBottom="12dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="20dp"
+            android:paddingVertical="14dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="TOTAL A PAGAR"
+                    android:textColor="#D7CCC8"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.05"/>
+
+                <TextView
+                    android:id="@+id/tvTotal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="S/. 0.00"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:textSize="24sp"/>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btnCobrar"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:backgroundTint="#2E7D32"
+                android:text="Cobrar"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                app:cornerRadius="12dp"/>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</RelativeLayout>

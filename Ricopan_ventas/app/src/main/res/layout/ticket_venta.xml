@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_gravity="center_horizontal"
+        android:src="@drawable/logo_real_rico_pan"
+        android:scaleType="fitCenter"
+        android:layout_marginBottom="8dp"
+        android:contentDescription="Logo Rico Pan" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RICO PAN"
+        android:textAlignment="center"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#8B4513"
+        android:layout_marginBottom="5dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Comprobante de Venta Digital"
+        android:textAlignment="center"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/tvTicketDetalles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Ticket N°: ...\nFecha: ...\nMedio de Pago: ..."
+        android:lineSpacingExtra="4dp"
+        android:layout_marginBottom="20dp"
+        android:textSize="14sp"/>
+
+    <TextView
+        android:id="@+id/tvTicketTotales"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TOTAL: S/. 0.00\nRecibido: S/. 0.00\nVuelto: S/. 0.00"
+        android:textStyle="bold"
+        android:lineSpacingExtra="4dp"
+        android:layout_marginBottom="20dp"
+        android:textSize="16sp"/>
+
+    <Button
+        android:id="@+id/btnCerrarTicket"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="Nueva Venta"
+        android:backgroundTint="#8B4513"/>
+
+</LinearLayout>

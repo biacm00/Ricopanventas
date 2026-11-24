@@ -153,7 +153,9 @@ public class SupabaseRepository {
                 } else {
                     String errorBody = response.body() != null ? response.body().string() : "";
                     android.util.Log.e("Supabase", "Error al registrar arqueo (" + response.code() + "): " + errorBody);
-                    mainHandler.post(() -> callback.onError("Error de servidor (" + response.code() + ")"));
+                    // Mostramos el mensaje exacto de Supabase para que el usuario sepa si falta la tabla o hay permisos
+                    String msg = errorBody.length() > 80 ? errorBody.substring(0, 80) : errorBody;
+                    mainHandler.post(() -> callback.onError("Error (" + response.code() + "): " + msg));
                 }
             }
         });

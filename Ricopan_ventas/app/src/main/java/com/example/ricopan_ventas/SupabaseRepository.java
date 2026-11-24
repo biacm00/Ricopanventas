@@ -111,25 +111,20 @@ public class SupabaseRepository {
     public static void registrarArqueo(Map<String, Object> arqueoData, SupabaseCallback<Boolean> callback) {
         String url = SupabaseConfig.SUPABASE_URL + "/rest/v1/arqueos";
         
+        // Enviamos únicamente los nombres de columnas estándar en snake_case para evitar errores 400 de Supabase
         Map<String, Object> cleanData = new HashMap<>();
         if (arqueoData.containsKey("totalEsperado")) {
             cleanData.put("total_esperado", arqueoData.get("totalEsperado"));
-            cleanData.put("totalesperado", arqueoData.get("totalEsperado"));
         }
         if (arqueoData.containsKey("efectivoFisico")) {
             cleanData.put("efectivo_fisico", arqueoData.get("efectivoFisico"));
-            cleanData.put("efectivofisico", arqueoData.get("efectivoFisico"));
         }
         if (arqueoData.containsKey("diferencia")) {
             cleanData.put("diferencia", arqueoData.get("diferencia"));
         }
-        for (Map.Entry<String, Object> entry : arqueoData.entrySet()) {
-            if (!cleanData.containsKey(entry.getKey())) {
-                cleanData.put(entry.getKey(), entry.getValue());
-            }
-        }
+        cleanData.put("fecha", new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss", java.util.Locale.getDefault()).format(new java.util.Date()));
 
-        String jsonBody = gson.toJson(cleanData.isEmpty() ? arqueoData : cleanData);
+        String jsonBody = gson.toJson(cleanData);
 
         RequestBody body = RequestBody.create(jsonBody, JSON);
         Request request = new Request.Builder()

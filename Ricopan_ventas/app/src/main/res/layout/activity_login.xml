@@ -111,6 +111,7 @@
                         android:layout_weight="1"
                         android:text="Vendedor"
                         android:textSize="14sp"
+                        android:textColor="#333333"
                         android:textStyle="bold"
                         android:checked="true"/>
 
@@ -121,6 +122,7 @@
                         android:layout_weight="1"
                         android:text="Administrador"
                         android:textSize="14sp"
+                        android:textColor="#333333"
                         android:textStyle="bold"/>
                 </RadioGroup>
 
@@ -140,6 +142,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
                     android:hint="usuario@ricopan.com"
+                    android:textColor="#222222"
+                    android:textColorHint="#999999"
                     android:inputType="textEmailAddress"
                     android:background="@drawable/bg_input_field"
                     android:paddingHorizontal="16dp"
@@ -161,6 +165,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="52dp"
                     android:hint="••••••••••••"
+                    android:textColor="#222222"
+                    android:textColorHint="#999999"
                     android:inputType="textPassword"
                     android:background="@drawable/bg_input_field"
                     android:paddingHorizontal="16dp"
@@ -189,6 +195,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
+                        android:textColor="#333333"
                         android:text="Turno 1: Mañana (06:00 a.m. - 02:30 p.m.)"
                         android:checked="true"
                         android:layout_marginBottom="4dp"/>
@@ -198,6 +205,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textSize="13sp"
+                        android:textColor="#333333"
                         android:text="Turno 2: Tarde (02:30 p.m. - 10:30 p.m.)"/>
                 </RadioGroup>
 

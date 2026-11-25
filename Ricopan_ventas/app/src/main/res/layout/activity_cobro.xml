@@ -94,6 +94,7 @@
                         android:layout_weight="1"
                         android:text="💵 Efectivo"
                         android:textSize="15sp"
+                        android:textColor="#333333"
                         android:checked="true"/>
 
                     <RadioButton
@@ -102,6 +103,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textSize="15sp"
+                        android:textColor="#333333"
                         android:text="📱 Yape / Plin"/>
                 </RadioGroup>
             </LinearLayout>

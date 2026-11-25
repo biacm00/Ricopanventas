@@ -16,10 +16,16 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.view.ViewGroup;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -32,6 +38,9 @@ public class VentasActivity extends AppCompatActivity {
     androidx.cardview.widget.CardView llBottomCart, llAdminBottomNav;
     Button btnAdminAdd, btnAdminExcel, btnAdminCierre;
     EditText etBuscar;
+    RecyclerView recyclerViewProductos;
+    ItemTouchHelper itemTouchHelper;
+    ProductosAdapter productosAdapter;
 
     double totalPagar = 0.0;
     boolean esAdmin = false;
@@ -110,8 +119,12 @@ public class VentasActivity extends AppCompatActivity {
         btnAgregarProducto = findViewById(R.id.btnAgregarProducto);
         btnImportarExcel = findViewById(R.id.btnImportarExcel);
         btnCierreCaja = findViewById(R.id.btnCierreCaja);
-        llListaProductos = findViewById(R.id.llListaProductos);
+        recyclerViewProductos = findViewById(R.id.recyclerViewProductos);
         etBuscar = findViewById(R.id.etBuscar);
+
+        if (recyclerViewProductos != null) {
+            recyclerViewProductos.setLayoutManager(new LinearLayoutManager(this));
+        }
 
         if (layoutVerCarrito != null) {
             layoutVerCarrito.setOnClickListener(v -> mostrarDialogoCarrito());
@@ -144,9 +157,35 @@ public class VentasActivity extends AppCompatActivity {
     }
 
     private void mostrarProductosEnPantalla(java.util.List<ProductoModel> lista) {
-        llListaProductos.removeAllViews();
-        for (ProductoModel p : lista) {
-            agregarProductoVista(p.id, p.nombre, p.precio, p.stock, p.categoria, p.imagen);
+        productosAdapter = new ProductosAdapter(lista, esAdmin, holder -> {
+            if (itemTouchHelper != null && esAdmin) {
+                itemTouchHelper.startDrag(holder);
+            }
+        });
+        recyclerViewProductos.setAdapter(productosAdapter);
+
+        if (esAdmin && itemTouchHelper == null) {
+            ItemTouchHelper.SimpleCallback callback = new ItemTouchHelper.SimpleCallback(
+                    ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
+                @Override
+                public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                    int fromPos = viewHolder.getAdapterPosition();
+                    int toPos = target.getAdapterPosition();
+                    java.util.Collections.swap(lista, fromPos, toPos);
+                    productosAdapter.notifyItemMoved(fromPos, toPos);
+                    return true;
+                }
+
+                @Override
+                public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {}
+
+                @Override
+                public boolean isLongPressDragEnabled() {
+                    return false; // Solo se arrastra desde el drag handle ≡
+                }
+            };
+            itemTouchHelper = new ItemTouchHelper(callback);
+            itemTouchHelper.attachToRecyclerView(recyclerViewProductos);
         }
     }
 
@@ -927,6 +966,195 @@ public class VentasActivity extends AppCompatActivity {
                 return Double.parseDouble(sb.toString());
             } catch (Exception ex) {
                 return 0.0;
+            }
+        }
+    }
+
+    interface OnDragStartListener {
+        void onDragStarted(RecyclerView.ViewHolder holder);
+    }
+
+    // ==========================================
+    // ADAPTER RECYCLERVIEW CON SOPORTE DRAG AND DROP (ItemTouchHelper) PARA ADMIN
+    // ==========================================
+    class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.ViewHolder> {
+        private final List<ProductoModel> items;
+        private final boolean isAdmin;
+        private final OnDragStartListener dragStartListener;
+
+        public ProductosAdapter(List<ProductoModel> items, boolean isAdmin, OnDragStartListener dragStartListener) {
+            this.items = items;
+            this.isAdmin = isAdmin;
+            this.dragStartListener = dragStartListener;
+        }
+
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            androidx.cardview.widget.CardView cardContainer = new androidx.cardview.widget.CardView(parent.getContext());
+            LinearLayout.LayoutParams cardParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            cardParams.setMargins(0, 0, 0, 16);
+            cardContainer.setLayoutParams(cardParams);
+            cardContainer.setRadius(20);
+            cardContainer.setCardElevation(4);
+            cardContainer.setCardBackgroundColor(Color.WHITE);
+
+            LinearLayout card = new LinearLayout(parent.getContext());
+            card.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            card.setPadding(20, 16, 20, 16);
+            card.setOrientation(LinearLayout.HORIZONTAL);
+            card.setGravity(Gravity.CENTER_VERTICAL);
+
+            // Drag handle (≡) solo para Administrador
+            TextView tvDrag = new TextView(parent.getContext());
+            tvDrag.setText("≡");
+            tvDrag.setTextSize(22);
+            tvDrag.setTypeface(null, Typeface.BOLD);
+            tvDrag.setTextColor(Color.parseColor("#8B4513"));
+            tvDrag.setPadding(0, 0, 14, 0);
+            tvDrag.setVisibility(isAdmin ? View.VISIBLE : View.GONE);
+            card.addView(tvDrag);
+
+            TextView tvThumb = new TextView(parent.getContext());
+            tvThumb.setTextSize(26);
+            tvThumb.setGravity(Gravity.CENTER);
+            LinearLayout.LayoutParams thumbParams = new LinearLayout.LayoutParams(100, 100);
+            thumbParams.setMargins(0, 0, 16, 0);
+            tvThumb.setLayoutParams(thumbParams);
+            tvThumb.setBackgroundColor(Color.parseColor("#FAF8F5"));
+            card.addView(tvThumb);
+
+            LinearLayout textLayout = new LinearLayout(parent.getContext());
+            textLayout.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+            textLayout.setOrientation(LinearLayout.VERTICAL);
+
+            TextView tvNombre = new TextView(parent.getContext());
+            tvNombre.setTextSize(15);
+            tvNombre.setTypeface(null, Typeface.BOLD);
+            tvNombre.setTextColor(Color.parseColor("#222222"));
+            textLayout.addView(tvNombre);
+
+            TextView tvPrecio = new TextView(parent.getContext());
+            tvPrecio.setTextSize(14);
+            tvPrecio.setTypeface(null, Typeface.BOLD);
+            tvPrecio.setTextColor(Color.parseColor("#8B4513"));
+            textLayout.addView(tvPrecio);
+
+            TextView tvStock = new TextView(parent.getContext());
+            tvStock.setTextSize(12);
+            textLayout.addView(tvStock);
+
+            card.addView(textLayout);
+
+            Button btnAction = new Button(parent.getContext());
+            LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(110, 90);
+            btnAction.setLayoutParams(btnParams);
+            btnAction.setTextSize(16);
+            btnAction.setTypeface(null, Typeface.BOLD);
+            btnAction.setTextColor(Color.WHITE);
+            card.addView(btnAction);
+
+            cardContainer.addView(card);
+            return new ViewHolder(cardContainer, tvDrag, tvThumb, tvNombre, tvPrecio, tvStock, btnAction);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            ProductoModel p = items.get(position);
+            holder.tvNombre.setText(p.nombre);
+            holder.tvPrecio.setText(String.format(Locale.getDefault(), "S/. %.2f", p.precio));
+
+            if (p.stock > 0) {
+                holder.tvStock.setText("Stock: " + p.stock + " und.");
+                holder.tvStock.setTextColor(Color.parseColor("#2E7D32"));
+            } else {
+                holder.tvStock.setText("¡AGOTADO!");
+                holder.tvStock.setTextColor(Color.parseColor("#D32F2F"));
+                holder.tvStock.setTypeface(null, Typeface.BOLD);
+            }
+
+            String icono = "🍞";
+            String catL = (p.categoria != null ? p.categoria.toLowerCase() : "");
+            if (catL.contains("pastel") || catL.contains("torta") || catL.contains("dulce")) icono = "🍰";
+            else if (catL.contains("abarrote") || catL.contains("azúcar") || catL.contains("azucar")) icono = "🛒";
+            else if (catL.contains("café") || catL.contains("cafe") || catL.contains("bebida") || catL.contains("infusión")) icono = "☕";
+            else if (catL.contains("bocad")) icono = "🥐";
+            else if (catL.contains("chorizo") || catL.contains("embutido") || catL.contains("jamonada") || catL.contains("salchicha")) icono = "🌭";
+            else if (catL.contains("queso") || catL.contains("lacteo") || catL.contains("yogurt")) icono = "🧀";
+            holder.tvThumb.setText(icono);
+
+            if (isAdmin) {
+                holder.btnAction.setText("🗑️");
+                holder.btnAction.setBackgroundColor(Color.parseColor("#C62828"));
+                holder.btnAction.setOnClickListener(v -> {
+                    new AlertDialog.Builder(v.getContext())
+                            .setTitle("Eliminar Producto")
+                            .setMessage("¿Estás seguro de eliminar '" + p.nombre + "' del catálogo?")
+                            .setPositiveButton("Eliminar", (dialog, which) -> {
+                                SupabaseRepository.eliminarProducto(p.id, new SupabaseRepository.SupabaseCallback<Boolean>() {
+                                    @Override
+                                    public void onSuccess(Boolean result) {
+                                        Toast.makeText(v.getContext(), "Producto eliminado", Toast.LENGTH_SHORT).show();
+                                        cargarCatalogoFirebase();
+                                    }
+
+                                    @Override
+                                    public void onError(String errorMessage) {
+                                        Toast.makeText(v.getContext(), errorMessage, Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            })
+                            .setNegativeButton("Cancelar", null)
+                            .show();
+                });
+
+                // Iniciar Drag al tocar el handle ≡
+                holder.tvDrag.setOnTouchListener((v, event) -> {
+                    if (event.getAction() == android.view.MotionEvent.ACTION_DOWN) {
+                        v.performClick();
+                        if (dragStartListener != null) {
+                            dragStartListener.onDragStarted(holder);
+                        }
+                    }
+                    return true;
+                });
+            } else {
+                holder.btnAction.setText("+");
+                holder.btnAction.setBackgroundColor(p.stock > 0 ? Color.parseColor("#8B4513") : Color.GRAY);
+                holder.btnAction.setEnabled(p.stock > 0);
+                holder.btnAction.setOnClickListener(v -> {
+                    String nombreLower = p.nombre.toLowerCase();
+                    String catLower = (p.categoria != null ? p.categoria.toLowerCase() : "");
+
+                    if (nombreLower.contains("pan") || catLower.contains("panadería") || catLower.contains("panaderia")) {
+                        mostrarDialogoPromocionPanes(p.nombre);
+                    } else if (nombreLower.contains("bocad") || catLower.contains("bocadito") || catLower.contains("bocaditos")) {
+                        mostrarDialogoPromocionBocaditos(p.nombre);
+                    } else {
+                        agregarItemAlCarrito(p.nombre, p.precio, 1);
+                    }
+                });
+            }
+        }
+
+        @Override
+        public int getItemCount() {
+            return items.size();
+        }
+
+        class ViewHolder extends RecyclerView.ViewHolder {
+            TextView tvDrag, tvThumb, tvNombre, tvPrecio, tvStock;
+            Button btnAction;
+
+            public ViewHolder(@NonNull View itemView, TextView tvDrag, TextView tvThumb, TextView tvNombre, TextView tvPrecio, TextView tvStock, Button btnAction) {
+                super(itemView);
+                this.tvDrag = tvDrag;
+                this.tvThumb = tvThumb;
+                this.tvNombre = tvNombre;
+                this.tvPrecio = tvPrecio;
+                this.tvStock = tvStock;
+                this.btnAction = btnAction;
             }
         }
     }

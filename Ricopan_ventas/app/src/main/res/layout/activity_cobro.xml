@@ -5,38 +5,53 @@
     android:layout_height="match_parent"
     android:background="#FAF8F5">
 
-    <!-- CABECERA CON GRADIENTE PREMIUM (Idéntica al Login) -->
+    <!-- CABECERA CON GRADIENTE PREMIUM E IDENTIDAD DE MARCA (Igual al Login) -->
     <View
         android:id="@+id/viewHeaderBg"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="180dp"
         android:background="@drawable/bg_header_gradient" />
 
     <LinearLayout
         android:id="@+id/llHeaderTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         android:paddingHorizontal="20dp"
-        android:paddingTop="24dp"
+        android:paddingTop="20dp"
         android:paddingBottom="16dp">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Módulo de Cobro"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            android:textColor="@android:color/white"
-            android:letterSpacing="0.03"/>
+        <ImageView
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:src="@drawable/logo_real_rico_pan"
+            android:scaleType="fitCenter"
+            android:layout_marginEnd="14dp"
+            android:contentDescription="Logo Rico Pan" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Seleccione método de pago y registre el efectivo"
-            android:textSize="13sp"
-            android:textColor="#E0C3AD"
-            android:layout_marginTop="4dp"/>
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MÓDULO DE COBRO"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:letterSpacing="0.05"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Panadería &amp; Pastelería Artesanal"
+                android:textSize="12sp"
+                android:textColor="#E0C3AD"/>
+        </LinearLayout>
     </LinearLayout>
 
     <ScrollView

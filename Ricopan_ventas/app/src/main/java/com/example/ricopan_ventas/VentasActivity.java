@@ -258,26 +258,45 @@ public class VentasActivity extends AppCompatActivity {
         btnAgregarProducto.setOnClickListener(v -> {
             LinearLayout contenedor = new LinearLayout(this);
             contenedor.setOrientation(LinearLayout.VERTICAL);
-            contenedor.setPadding(50, 40, 50, 10);
+            contenedor.setPadding(40, 30, 40, 20);
+            contenedor.setBackgroundColor(Color.parseColor("#FAF8F5"));
 
             EditText etCodigo = new EditText(this);
             etCodigo.setHint("Código (ej. PAN01)");
+            etCodigo.setTextColor(Color.parseColor("#222222"));
+            etCodigo.setHintTextColor(Color.parseColor("#888888"));
+            etCodigo.setBackgroundResource(R.drawable.bg_input_field);
+            etCodigo.setPadding(16, 12, 16, 12);
 
             EditText etNombre = new EditText(this);
             etNombre.setHint("Nombre del producto");
+            etNombre.setTextColor(Color.parseColor("#222222"));
+            etNombre.setHintTextColor(Color.parseColor("#888888"));
+            etNombre.setBackgroundResource(R.drawable.bg_input_field);
+            etNombre.setPadding(16, 12, 16, 12);
 
             EditText etPrecio = new EditText(this);
             etPrecio.setHint("Precio (ej. 6.50)");
+            etPrecio.setTextColor(Color.parseColor("#222222"));
+            etPrecio.setHintTextColor(Color.parseColor("#888888"));
+            etPrecio.setBackgroundResource(R.drawable.bg_input_field);
+            etPrecio.setPadding(16, 12, 16, 12);
             etPrecio.setInputType(android.text.InputType.TYPE_CLASS_NUMBER | android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
 
             EditText etStock = new EditText(this);
             etStock.setHint("Cantidad en Stock (ej. 50)");
+            etStock.setTextColor(Color.parseColor("#222222"));
+            etStock.setHintTextColor(Color.parseColor("#888888"));
+            etStock.setBackgroundResource(R.drawable.bg_input_field);
+            etStock.setPadding(16, 12, 16, 12);
             etStock.setInputType(android.text.InputType.TYPE_CLASS_NUMBER);
 
             // Selector de Categoría
             TextView tvCat = new TextView(this);
             tvCat.setText("Categoría:");
-            tvCat.setPadding(0, 20, 0, 0);
+            tvCat.setTextColor(Color.parseColor("#8B4513"));
+            tvCat.setTypeface(null, Typeface.BOLD);
+            tvCat.setPadding(0, 20, 0, 8);
 
             android.widget.Spinner spinnerCategoria = new android.widget.Spinner(this);
             android.widget.ArrayAdapter<String> adapter = new android.widget.ArrayAdapter<>(this,
@@ -336,16 +355,23 @@ public class VentasActivity extends AppCompatActivity {
         btnImportarExcel.setOnClickListener(v -> {
             LinearLayout contenedor = new LinearLayout(this);
             contenedor.setOrientation(LinearLayout.VERTICAL);
-            contenedor.setPadding(40, 20, 40, 10);
+            contenedor.setPadding(40, 30, 40, 20);
+            contenedor.setBackgroundColor(Color.parseColor("#FAF8F5"));
 
             TextView tvInstrucciones = new TextView(this);
             tvInstrucciones.setText("Pegue las líneas CSV del inventario Excel:\n(Formato: Código, Nombre, Precio, Categoría, Stock)");
             tvInstrucciones.setTextSize(13);
-            tvInstrucciones.setTextColor(Color.parseColor("#333333"));
+            tvInstrucciones.setTypeface(null, Typeface.BOLD);
+            tvInstrucciones.setTextColor(Color.parseColor("#8B4513"));
+            tvInstrucciones.setPadding(0, 0, 0, 10);
 
             EditText etCsvData = new EditText(this);
             etCsvData.setLines(8);
             etCsvData.setGravity(Gravity.TOP);
+            etCsvData.setTextColor(Color.parseColor("#222222"));
+            etCsvData.setHintTextColor(Color.parseColor("#888888"));
+            etCsvData.setBackgroundResource(R.drawable.bg_input_field);
+            etCsvData.setPadding(16, 12, 16, 12);
             etCsvData.setText("PAN01, Milhojas con Manjar Blanco, 5.00, Pastelería, 50\nPAN02, Pan Francés Docena, 4.50, Panadería, 100\nPAN03, Empanada de Carne, 6.00, Panadería, 30\nBEB01, Café Americano 8oz, 4.00, Cafés e Infusiones, 40\nTORT01, Torta de Chocolate 1K, 45.00, Pastelería, 15");
 
             contenedor.addView(tvInstrucciones);

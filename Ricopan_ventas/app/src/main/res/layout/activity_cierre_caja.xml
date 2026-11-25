@@ -1,144 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     android:background="#FAF8F5">
 
+    <!-- CABECERA CON GRADIENTE PREMIUM -->
+    <View
+        android:id="@+id/viewHeaderBg"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:background="@drawable/bg_header_gradient" />
+
     <LinearLayout
+        android:id="@+id/llHeaderTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:paddingHorizontal="20dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="16dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Consolidado y Cierre de Caja"
-            android:textSize="24sp"
+            android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="#8B4513"
-            android:layout_marginBottom="16dp"/>
-
-        <!-- TARJETA RESUMEN -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@android:color/white"
-            android:layout_marginBottom="16dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Desglose de Ventas en Tiempo Real"
-                    android:textColor="#333333"
-                    android:textStyle="bold"
-                    android:textSize="16sp"
-                    android:layout_marginBottom="12dp"/>
-
-                <TextView
-                    android:id="@+id/tvVentasManana"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Turno Mañana: S/. 0.00"
-                    android:textSize="15sp"
-                    android:textColor="#555555"
-                    android:layout_marginBottom="6dp"/>
-
-                <TextView
-                    android:id="@+id/tvVentasTarde"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Turno Tarde/Noche: S/. 0.00"
-                    android:textSize="15sp"
-                    android:textColor="#555555"
-                    android:layout_marginBottom="14dp"/>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#E0E0E0"
-                    android:layout_marginBottom="14dp"/>
-
-                <TextView
-                    android:id="@+id/tvTotalEsperado"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TOTAL GENERAL: S/. 0.00"
-                    android:textColor="#2E7D32"
-                    android:textStyle="bold"
-                    android:textSize="20sp"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- TARJETA INGRESO EFECTIVO -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="16dp"
-            app:cardElevation="4dp"
-            app:cardBackgroundColor="@android:color/white"
-            android:layout_marginBottom="24dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Efectivo en Gaveta:"
-                    android:textColor="#666666"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:layout_marginBottom="8dp"/>
-
-                <EditText
-                    android:id="@+id/etEfectivoFisico"
-                    android:layout_width="match_parent"
-                    android:layout_height="52dp"
-                    android:hint="Ingrese el dinero contado (S/.)"
-                    android:inputType="numberDecimal"
-                    android:background="#F5EFE6"
-                    android:paddingHorizontal="14dp"
-                    android:textSize="16sp"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- BOTONES DE ACCIÓN -->
-        <Button
-            android:id="@+id/btnConfirmarCierre"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="Confirmar Cierre / Arqueo"
-            android:backgroundTint="#8B4513"
             android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            app:cornerRadius="12dp"
-            android:layout_marginBottom="12dp"/>
+            android:letterSpacing="0.03"/>
 
-        <Button
-            android:id="@+id/btnExportarPDF"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:text="📄 Exportar Resumen a PDF"
-            android:backgroundTint="#1976D2"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            app:cornerRadius="12dp"/>
-
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Resumen diario de ventas y arqueo"
+            android:textSize="13sp"
+            android:textColor="#E0C3AD"
+            android:layout_marginTop="4dp"/>
     </LinearLayout>
-</ScrollView>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/llHeaderTitle"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <!-- TARJETA RESUMEN -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="22dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Desglose de Ventas en Tiempo Real"
+                        android:textColor="#8B4513"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:layout_marginBottom="14dp"
+                        android:letterSpacing="0.03"/>
+
+                    <TextView
+                        android:id="@+id/tvVentasManana"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Turno Mañana: S/. 0.00"
+                        android:textSize="15sp"
+                        android:textColor="#444444"
+                        android:layout_marginBottom="8dp"/>
+
+                    <TextView
+                        android:id="@+id/tvVentasTarde"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Turno Tarde/Noche: S/. 0.00"
+                        android:textSize="15sp"
+                        android:textColor="#444444"
+                        android:layout_marginBottom="16dp"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#EFEBE6"
+                        android:layout_marginBottom="16dp"/>
+
+                    <TextView
+                        android:id="@+id/tvTotalEsperado"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="TOTAL GENERAL: S/. 0.00"
+                        android:textColor="#2E7D32"
+                        android:textStyle="bold"
+                        android:textSize="22sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- TARJETA INGRESO EFECTIVO -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_marginBottom="24dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="22dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="EFECTIVO EN GAVETA"
+                        android:textColor="#8B4513"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:letterSpacing="0.05"
+                        android:layout_marginBottom="10dp"/>
+
+                    <EditText
+                        android:id="@+id/etEfectivoFisico"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:hint="Ingrese el dinero contado (S/.)"
+                        android:textColor="#222222"
+                        android:textColorHint="#888888"
+                        android:inputType="numberDecimal"
+                        android:background="@drawable/bg_input_field"
+                        android:paddingHorizontal="16dp"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- BOTONES DE ACCIÓN -->
+            <Button
+                android:id="@+id/btnConfirmarCierre"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:text="Confirmar Cierre / Arqueo"
+                android:backgroundTint="#8B4513"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="17sp"
+                app:cornerRadius="14dp"
+                android:layout_marginBottom="14dp"
+                android:elevation="6dp"/>
+
+            <Button
+                android:id="@+id/btnExportarPDF"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:text="📄 Exportar Resumen a PDF"
+                android:backgroundTint="#1976D2"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="17sp"
+                app:cornerRadius="14dp"
+                android:elevation="6dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

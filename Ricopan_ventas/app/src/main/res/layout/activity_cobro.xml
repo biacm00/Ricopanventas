@@ -1,62 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     android:background="#FAF8F5">
 
+    <!-- CABECERA CON GRADIENTE PREMIUM (Idéntica al Login) -->
+    <View
+        android:id="@+id/viewHeaderBg"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:background="@drawable/bg_header_gradient" />
+
     <LinearLayout
+        android:id="@+id/llHeaderTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Módulo de Cobro"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:letterSpacing="0.03"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Seleccione método de pago y registre el efectivo"
+            android:textSize="13sp"
+            android:textColor="#E0C3AD"
+            android:layout_marginTop="4dp"/>
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/llHeaderTitle"
+        android:fillViewport="true"
+        android:clipToPadding="false"
         android:padding="20dp">
 
-        <!-- TÍTULO DE LA PANTALLA -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginBottom="20dp">
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Módulo de Cobro"
-                android:textSize="26sp"
-                android:textStyle="bold"
-                android:textColor="#8B4513"
-                android:letterSpacing="0.02"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Seleccione método de pago y registre el efectivo"
-                android:textSize="13sp"
-                android:textColor="#777777"
-                android:layout_marginTop="2dp"/>
-        </LinearLayout>
-
-        <!-- TARJETA DE RESUMEN DE PAGO -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="6dp"
-            app:cardBackgroundColor="@android:color/white"
-            android:layout_marginBottom="18dp">
-
-            <LinearLayout
+            <!-- TARJETA DE RESUMEN DE PAGO -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="22dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_marginBottom="18dp">
 
                 <LinearLayout
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:padding="22dp"
                     android:orientation="vertical">
 
                     <TextView
@@ -74,121 +82,120 @@
                         android:layout_height="wrap_content"
                         android:text="S/. 0.00"
                         android:textColor="#222222"
-                        android:textSize="30sp"
+                        android:textSize="32sp"
                         android:textStyle="bold"
-                        android:layout_marginTop="4dp"/>
+                        android:layout_marginTop="6dp"/>
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- TARJETA MÉTODO DE PAGO -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="6dp"
-            app:cardBackgroundColor="@android:color/white"
-            android:layout_marginBottom="18dp">
-
-            <LinearLayout
+            <!-- TARJETA MÉTODO DE PAGO -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="22dp"
-                android:orientation="vertical">
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_marginBottom="18dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="MÉTODO DE PAGO"
-                    android:textColor="#8B4513"
-                    android:textStyle="bold"
-                    android:textSize="12sp"
-                    android:letterSpacing="0.05"
-                    android:layout_marginBottom="14dp"/>
-
-                <RadioGroup
-                    android:id="@+id/rgMetodoPago"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:padding="22dp"
+                    android:orientation="vertical">
 
-                    <RadioButton
-                        android:id="@+id/rbEfectivo"
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="💵 Efectivo"
-                        android:textSize="15sp"
-                        android:textColor="#333333"
+                        android:text="MÉTODO DE PAGO"
+                        android:textColor="#8B4513"
                         android:textStyle="bold"
-                        android:checked="true"/>
+                        android:textSize="12sp"
+                        android:letterSpacing="0.05"
+                        android:layout_marginBottom="14dp"/>
 
-                    <RadioButton
-                        android:id="@+id/rbYape"
-                        android:layout_width="0dp"
+                    <RadioGroup
+                        android:id="@+id/rgMetodoPago"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textSize="15sp"
-                        android:textColor="#333333"
-                        android:textStyle="bold"
-                        android:text="📱 Yape / Plin"/>
-                </RadioGroup>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                        android:orientation="horizontal">
 
-        <!-- TARJETA INGRESO EFECTIVO -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/llProcesamientoEfectivo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="20dp"
-            app:cardElevation="6dp"
-            app:cardBackgroundColor="@android:color/white"
-            android:layout_marginBottom="28dp">
+                        <RadioButton
+                            android:id="@+id/rbEfectivo"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="💵 Efectivo"
+                            android:textSize="15sp"
+                            android:textColor="#333333"
+                            android:textStyle="bold"
+                            android:checked="true"/>
 
-            <LinearLayout
+                        <RadioButton
+                            android:id="@+id/rbYape"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="15sp"
+                            android:textColor="#333333"
+                            android:textStyle="bold"
+                            android:text="📱 Yape / Plin"/>
+                    </RadioGroup>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- TARJETA INGRESO EFECTIVO -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/llProcesamientoEfectivo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="22dp"
-                android:orientation="vertical">
+                app:cardCornerRadius="20dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@android:color/white"
+                android:layout_marginBottom="28dp">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="INGRESO DE EFECTIVO"
-                    android:textColor="#8B4513"
-                    android:textStyle="bold"
-                    android:textSize="12sp"
-                    android:letterSpacing="0.05"
-                    android:layout_marginBottom="10dp"/>
-
-                <EditText
-                    android:id="@+id/etMontoRecibido"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:hint="Ingrese monto recibido (S/.)"
-                    android:textColor="#222222"
-                    android:textColorHint="#888888"
-                    android:inputType="numberDecimal"
-                    android:background="@drawable/bg_input_field"
-                    android:paddingHorizontal="16dp"
-                    android:textSize="16sp"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                    android:layout_height="wrap_content"
+                    android:padding="22dp"
+                    android:orientation="vertical">
 
-        <!-- BOTÓN CONFIRMAR VENTA -->
-        <Button
-            android:id="@+id/btnConfirmarVenta"
-            android:layout_width="match_parent"
-            android:layout_height="58dp"
-            android:text="Confirmar y Generar Ticket"
-            android:backgroundTint="#2E7D32"
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:textSize="17sp"
-            app:cornerRadius="14dp"
-            android:elevation="6dp"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="INGRESO DE EFECTIVO"
+                        android:textColor="#8B4513"
+                        android:textStyle="bold"
+                        android:textSize="12sp"
+                        android:letterSpacing="0.05"
+                        android:layout_marginBottom="10dp"/>
 
-    </LinearLayout>
-</ScrollView>
+                    <EditText
+                        android:id="@+id/etMontoRecibido"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:hint="Ingrese monto recibido (S/.)"
+                        android:textColor="#222222"
+                        android:textColorHint="#888888"
+                        android:inputType="numberDecimal"
+                        android:background="@drawable/bg_input_field"
+                        android:paddingHorizontal="16dp"
+                        android:textSize="16sp"/>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- BOTÓN CONFIRMAR VENTA -->
+            <Button
+                android:id="@+id/btnConfirmarVenta"
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:text="Confirmar y Generar Ticket"
+                android:backgroundTint="#2E7D32"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:textSize="17sp"
+                app:cornerRadius="14dp"
+                android:elevation="6dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

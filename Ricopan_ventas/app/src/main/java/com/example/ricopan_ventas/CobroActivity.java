@@ -113,24 +113,35 @@ public class CobroActivity extends AppCompatActivity {
     }
 
     private void mostrarTicket(String idTicket, String fechaHora, String metodoPago, double montoRecibido, double vuelto) {
-        // Inflar el diseño del ticket personalizado que creamos en XML
+        // Inflar el diseño del ticket personalizado profesional
         View dialogView = LayoutInflater.from(this).inflate(R.layout.ticket_venta, null);
         AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).setCancelable(false).create();
 
         TextView tvDetalles = dialogView.findViewById(R.id.tvTicketDetalles);
-        TextView tvTotales = dialogView.findViewById(R.id.tvTicketTotales);
+        TextView tvProductos = dialogView.findViewById(R.id.tvTicketProductos);
+        TextView tvTotalMonto = dialogView.findViewById(R.id.tvTicketTotalMonto);
+        TextView tvMetodoPago = dialogView.findViewById(R.id.tvTicketMetodoPago);
+        Button btnCompartirTicket = dialogView.findViewById(R.id.btnCompartirTicket);
         Button btnCerrarTicket = dialogView.findViewById(R.id.btnCerrarTicket);
 
-        String numTicket = (idTicket != null && idTicket.length() >= 8) ? idTicket.substring(1, 8).toUpperCase() : (idTicket != null ? idTicket : "0000");
+        String numTicket = "#TKT-" + (idTicket != null && idTicket.length() >= 6 ? idTicket.substring(idTicket.length() - 5).toUpperCase() : "00002");
 
-        // Llenar los datos del ticket
-        tvDetalles.setText("Ticket N°: " + numTicket +
-                "\nFecha: " + fechaHora +
-                "\nMedio de Pago: " + metodoPago);
+        // Llenar los datos del ticket idéntico al modelo profesional
+        tvDetalles.setText(String.format(Locale.getDefault(),
+                "Ticket N°: %s\nFecha y Hora: %s\nTurno: Turno 1: Mañana\nCajero: Vendedor / Cajero",
+                numTicket, fechaHora));
 
-        tvTotales.setText(String.format(Locale.getDefault(),
-                "TOTAL A PAGAR: S/. %.2f\nMonto Recibido: S/. %.2f\nVuelto Entregado: S/. %.2f",
-                totalPagar, montoRecibido, vuelto));
+        tvProductos.setText("• Venta Registrada en Caja (S/. " + String.format(Locale.getDefault(), "%.2f", totalPagar) + ")");
+        tvTotalMonto.setText(String.format(Locale.getDefault(), "S/. %.2f", totalPagar));
+        tvMetodoPago.setText("Medio de Pago: " + metodoPago.toUpperCase());
+
+        btnCompartirTicket.setOnClickListener(v -> {
+            android.content.Intent shareIntent = new android.content.Intent(android.content.Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Comprobante Rico Pan - " + numTicket);
+            shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "RICO PAN - Comprobante Digital\n" + numTicket + "\nTotal: S/. " + String.format(Locale.getDefault(), "%.2f", totalPagar) + "\nMétodo: " + metodoPago);
+            startActivity(android.content.Intent.createChooser(shareIntent, "Compartir Ticket"));
+        });
 
         btnCerrarTicket.setOnClickListener(v -> {
             dialog.dismiss();

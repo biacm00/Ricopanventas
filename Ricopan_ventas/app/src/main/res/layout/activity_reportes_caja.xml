@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FAF8F5">
+
+    <!-- CABECERA CON GRADIENTE PREMIUM -->
+    <View
+        android:id="@+id/viewHeaderBg"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:background="@drawable/bg_header_gradient" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="-140dp"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Panel de Control y Reportes"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:letterSpacing="0.03"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Historial de ventas y consolidado por turnos"
+            android:textSize="13sp"
+            android:textColor="#E0C3AD"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="14dp"/>
+
+        <!-- PESTAÑAS (TABS) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:orientation="horizontal"
+            android:background="#65350F"
+            android:padding="3dp"
+            app:cornerRadius="12dp">
+
+            <Button
+                android:id="@+id/btnTabHistorial"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Historial de Ventas"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:backgroundTint="#8B4513"
+                android:textColor="@android:color/white"
+                app:cornerRadius="10dp"/>
+
+            <Button
+                android:id="@+id/btnTabConsolidado"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="Consolidado y Cierre"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                android:backgroundTint="#65350F"
+                android:textColor="#D7CCC8"
+                app:cornerRadius="10dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- FILTRO DE TURNOS -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnFiltroTodosTurnos"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Todos los Turnos"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:backgroundTint="#8B4513"
+                android:textColor="@android:color/white"
+                android:layout_marginEnd="8dp"
+                app:cornerRadius="18dp"/>
+
+            <Button
+                android:id="@+id/btnFiltroTurno1"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Turno 1 (Mañana)"
+                android:textSize="12sp"
+                android:backgroundTint="#FFFFFF"
+                android:textColor="#333333"
+                android:layout_marginEnd="8dp"
+                app:cornerRadius="18dp"/>
+
+            <Button
+                android:id="@+id/btnFiltroTurno2"
+                android:layout_width="wrap_content"
+                android:layout_height="36dp"
+                android:text="Turno 2 (Tarde/Noche)"
+                android:textSize="12sp"
+                android:backgroundTint="#FFFFFF"
+                android:textColor="#333333"
+                app:cornerRadius="18dp"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <!-- CONTENEDOR DE CONTENIDO (HISTORIAL VS CONSOLIDADO) -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <!-- VISTA HISTORIAL DE VENTAS -->
+        <ScrollView
+            android:id="@+id/layoutHistorial"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:id="@+id/llListaHistorial"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- VISTA CONSOLIDADO Y CIERRE -->
+        <ScrollView
+            android:id="@+id/layoutConsolidado"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingBottom="20dp">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@android:color/white"
+                    android:layout_marginBottom="16dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="20dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Resumen General Recaudado"
+                            android:textColor="#333333"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="8dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="center_vertical"
+                            android:layout_marginBottom="16dp">
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="TOTAL GENERAL RECAUDADO"
+                                    android:textSize="10sp"
+                                    android:textColor="#777777"
+                                    android:textStyle="bold"/>
+
+                                <TextView
+                                    android:id="@+id/tvConsolidadoTotal"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="S/. 0.00"
+                                    android:textSize="26sp"
+                                    android:textStyle="bold"
+                                    android:textColor="#8B4513"/>
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tvConsolidadoCantidadVentas"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0 Ventas Realizadas"
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:textColor="#333333"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                app:cardCornerRadius="12dp"
+                                app:cardElevation="0dp"
+                                app:cardBackgroundColor="#F1F8E9"
+                                android:layout_marginEnd="8dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:padding="12dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Efectivo"
+                                        android:textSize="12sp"
+                                        android:textColor="#2E7D32"
+                                        android:textStyle="bold"/>
+
+                                    <TextView
+                                        android:id="@+id/tvConsolidadoEfectivo"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="S/. 0.00"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold"
+                                        android:textColor="#2E7D32"/>
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+
+                            <androidx.cardview.widget.CardView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                app:cardCornerRadius="12dp"
+                                app:cardElevation="0dp"
+                                app:cardBackgroundColor="#F3E5F5">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="vertical"
+                                    android:padding="12dp">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="Digitales (Yape/Plin)"
+                                        android:textSize="12sp"
+                                        android:textColor="#7B1FA2"
+                                        android:textStyle="bold"/>
+
+                                    <TextView
+                                        android:id="@+id/tvConsolidadoDigital"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:text="S/. 0.00"
+                                        android:textSize="18sp"
+                                        android:textStyle="bold"
+                                        android:textColor="#7B1FA2"/>
+                                </LinearLayout>
+                            </androidx.cardview.widget.CardView>
+                        </LinearLayout>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- DESGLOSE POR TURNO -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Desglose por Turno de Trabajo"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="#8B4513"
+                    android:layout_marginBottom="12dp"/>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@android:color/white"
+                    android:layout_marginBottom="12dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Turno 1: Mañana (06:00 a.m. - 02:30 p.m.)"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="#333333"
+                            android:layout_marginBottom="6dp"/>
+
+                        <TextView
+                            android:id="@+id/tvTurno1Monto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="S/. 0.00"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#8B4513"
+                            android:layout_marginBottom="4dp"/>
+
+                        <TextView
+                            android:id="@+id/tvTurno1Detalle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 transacciones registradas"
+                            android:textSize="12sp"
+                            android:textColor="#777777"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="4dp"
+                    app:cardBackgroundColor="@android:color/white">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Turno 2: Tarde / Noche (02:30 p.m. - 10:30 p.m.)"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:textColor="#333333"
+                            android:layout_marginBottom="6dp"/>
+
+                        <TextView
+                            android:id="@+id/tvTurno2Monto"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="S/. 0.00"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            android:textColor="#8B4513"
+                            android:layout_marginBottom="4dp"/>
+
+                        <TextView
+                            android:id="@+id/tvTurno2Detalle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 transacciones registradas"
+                            android:textSize="12sp"
+                            android:textColor="#777777"/>
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+</LinearLayout>

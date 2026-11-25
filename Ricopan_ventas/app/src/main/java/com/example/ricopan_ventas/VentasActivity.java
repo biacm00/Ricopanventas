@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,6 +33,22 @@ public class VentasActivity extends AppCompatActivity {
 
     double totalPagar = 0.0;
     boolean esAdmin = false;
+    View layoutVerCarrito;
+
+    // Modelo para los elementos agregados al carrito antes de cobrar
+    static class CartItem {
+        String nombre;
+        double precio;
+        int cantidad;
+
+        public CartItem(String nombre, double precio, int cantidad) {
+            this.nombre = nombre;
+            this.precio = precio;
+            this.cantidad = cantidad;
+        }
+    }
+
+    java.util.List<CartItem> listaCarrito = new java.util.ArrayList<>();
 
     static class ProductoModel {
         String id;
@@ -83,11 +100,16 @@ public class VentasActivity extends AppCompatActivity {
         tvTituloRol = findViewById(R.id.tvTituloRol);
         llAdminPanel = findViewById(R.id.llAdminPanel);
         llBottomCart = findViewById(R.id.llBottomCart);
+        layoutVerCarrito = findViewById(R.id.layoutVerCarrito);
         btnAgregarProducto = findViewById(R.id.btnAgregarProducto);
         btnImportarExcel = findViewById(R.id.btnImportarExcel);
         btnCierreCaja = findViewById(R.id.btnCierreCaja);
         llListaProductos = findViewById(R.id.llListaProductos);
         etBuscar = findViewById(R.id.etBuscar);
+
+        if (layoutVerCarrito != null) {
+            layoutVerCarrito.setOnClickListener(v -> mostrarDialogoCarrito());
+        }
     }
 
     private void configurarBuscadorYFiltros() {
@@ -659,9 +681,7 @@ public class VentasActivity extends AppCompatActivity {
             } else if (nombreLower.contains("bocad") || catLower.contains("bocadito") || catLower.contains("bocaditos")) {
                 mostrarDialogoPromocionBocaditos(nombre);
             } else {
-                totalPagar += precio;
-                tvTotal.setText(String.format(Locale.getDefault(), "S/. %.2f", totalPagar));
-                Toast.makeText(this, nombre + " agregado", Toast.LENGTH_SHORT).show();
+                agregarItemAlCarrito(nombre, precio, 1);
             }
         });
 
@@ -764,9 +784,88 @@ public class VentasActivity extends AppCompatActivity {
     }
 
     private void agregarAlCarritoPromocion(String nombre, int cantidad, double total) {
-        totalPagar += total;
-        tvTotal.setText(String.format(Locale.getDefault(), "S/. %.2f", totalPagar));
+        agregarItemAlCarrito(nombre + " (Promo)", total, cantidad);
         Toast.makeText(this, cantidad + "x " + nombre + " agregado (S/. " + String.format(Locale.getDefault(), "%.2f", total) + ")", Toast.LENGTH_LONG).show();
+    }
+
+    private void agregarItemAlCarrito(String nombre, double precioTotal, int cantidad) {
+        listaCarrito.add(new CartItem(nombre, precioTotal, cantidad));
+        totalPagar += precioTotal;
+        tvTotal.setText(String.format(Locale.getDefault(), "S/. %.2f", totalPagar));
+        Toast.makeText(this, cantidad + "x " + nombre + " agregado", Toast.LENGTH_SHORT).show();
+    }
+
+    private void mostrarDialogoCarrito() {
+        if (listaCarrito.isEmpty()) {
+            Toast.makeText(this, "El carrito está vacío. Haz clic en '+' para agregar productos.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        LinearLayout contenedor = new LinearLayout(this);
+        contenedor.setOrientation(LinearLayout.VERTICAL);
+        contenedor.setPadding(30, 20, 30, 10);
+
+        ScrollView scrollView = new ScrollView(this);
+        LinearLayout innerLayout = new LinearLayout(this);
+        innerLayout.setOrientation(LinearLayout.VERTICAL);
+
+        for (int i = 0; i < listaCarrito.size(); i++) {
+            final int index = i;
+            CartItem item = listaCarrito.get(i);
+
+            LinearLayout row = new LinearLayout(this);
+            row.setOrientation(LinearLayout.HORIZONTAL);
+            row.setGravity(Gravity.CENTER_VERTICAL);
+            row.setPadding(0, 12, 0, 12);
+
+            TextView tvDesc = new TextView(this);
+            tvDesc.setText(item.cantidad + "x " + item.nombre + "\nS/. " + String.format(Locale.getDefault(), "%.2f", item.precio));
+            tvDesc.setTextSize(14);
+            tvDesc.setTextColor(Color.parseColor("#333333"));
+            tvDesc.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+
+            Button btnEliminarItem = new Button(this);
+            btnEliminarItem.setText("❌");
+            btnEliminarItem.setTextSize(12);
+            btnEliminarItem.setBackgroundColor(Color.parseColor("#D32F2F"));
+            btnEliminarItem.setTextColor(Color.WHITE);
+            LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(90, 90);
+            btnEliminarItem.setLayoutParams(btnParams);
+
+            btnEliminarItem.setOnClickListener(v -> {
+                totalPagar -= item.precio;
+                if (totalPagar < 0) totalPagar = 0.0;
+                tvTotal.setText(String.format(Locale.getDefault(), "S/. %.2f", totalPagar));
+                listaCarrito.remove(index);
+                Toast.makeText(this, item.nombre + " eliminado del carrito", Toast.LENGTH_SHORT).show();
+                // Recargar el diálogo para refrescar la lista
+                mostrarDialogoCarrito();
+            });
+
+            row.addView(tvDesc);
+            row.addView(btnEliminarItem);
+            innerLayout.addView(row);
+
+            View divider = new View(this);
+            divider.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
+            divider.setBackgroundColor(Color.parseColor("#E0E0E0"));
+            innerLayout.addView(divider);
+        }
+
+        scrollView.addView(innerLayout);
+        contenedor.addView(scrollView);
+
+        new AlertDialog.Builder(this)
+                .setTitle("🛒 Productos en el Carrito")
+                .setView(contenedor)
+                .setPositiveButton("Cerrar", null)
+                .setNeutralButton("Vaciar Todo", (d, w) -> {
+                    listaCarrito.clear();
+                    totalPagar = 0.0;
+                    tvTotal.setText("S/. 0.00");
+                    Toast.makeText(this, "Carrito vaciado", Toast.LENGTH_SHORT).show();
+                })
+                .show();
     }
 
     private double parsePrecio(com.google.gson.JsonElement element) {

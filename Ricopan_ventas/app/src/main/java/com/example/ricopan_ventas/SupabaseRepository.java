@@ -278,4 +278,32 @@ public class SupabaseRepository {
             }
         });
     }
+
+    // 8. Limpiar / Reiniciar ventas para el día siguiente
+    public static void limpiarVentas(SupabaseCallback<Boolean> callback) {
+        String url = SupabaseConfig.SUPABASE_URL + "/rest/v1/ventas?id=gt.0";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("apikey", SupabaseConfig.SUPABASE_KEY)
+                .addHeader("Authorization", "Bearer " + SupabaseConfig.SUPABASE_KEY)
+                .delete()
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                mainHandler.post(() -> callback.onError(e.getMessage()));
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (response.isSuccessful() || response.code() == 204) {
+                    mainHandler.post(() -> callback.onSuccess(true));
+                } else {
+                    mainHandler.post(() -> callback.onError("Error al limpiar ventas (" + response.code() + ")"));
+                }
+            }
+        });
+    }
 }

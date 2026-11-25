@@ -1,5 +1,6 @@
 package com.example.ricopan_ventas;
 
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
@@ -134,50 +135,75 @@ public class CierreCajaActivity extends AppCompatActivity {
     }
 
     private void generarReportePDF() {
+        // Usamos ACTION_CREATE_DOCUMENT para que el usuario elija dónde guardar el PDF en su celular (Descargas, Documentos, etc.)
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/pdf");
+        intent.putExtra(Intent.EXTRA_TITLE, "Reporte_CierreCaja_RicoPan.pdf");
+        startActivityForResult(intent, 200);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 200 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            android.net.Uri uri = data.getData();
+            guardarPDFEnUri(uri);
+        }
+    }
+
+    private void guardarPDFEnUri(android.net.Uri uri) {
         PdfDocument document = new PdfDocument();
-        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(300, 400, 1).create();
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(400, 600, 1).create();
         PdfDocument.Page page = document.startPage(pageInfo);
 
         Canvas canvas = page.getCanvas();
         Paint paint = new Paint();
 
-        paint.setTextSize(16);
+        // Encabezado del reporte
+        paint.setColor(android.graphics.Color.parseColor("#8B4513"));
+        paint.setTextSize(18);
         paint.setFakeBoldText(true);
-        canvas.drawText("RICO PAN - REPORTE DE VENTAS", 20, 40, paint);
+        canvas.drawText("PANADERÍA RICO PAN", 30, 50, paint);
 
-        paint.setTextSize(14);
+        paint.setColor(android.graphics.Color.BLACK);
+        paint.setTextSize(12);
         paint.setFakeBoldText(false);
-        canvas.drawText("Turno Mañana: S/. " + String.format(Locale.getDefault(), "%.2f", sumaManana), 20, 80, paint);
-        canvas.drawText("Turno Tarde/Noche: S/. " + String.format(Locale.getDefault(), "%.2f", sumaTarde), 20, 110, paint);
+        canvas.drawText("Reporte Consolidado de Cierre de Caja", 30, 75, paint);
+
+        // Línea divisoria
+        paint.setStrokeWidth(1);
+        canvas.drawLine(30, 95, 370, 95, paint);
+
+        // Datos del consolidado
+        paint.setTextSize(14);
+        canvas.drawText("Turno Mañana: S/. " + String.format(Locale.getDefault(), "%.2f", sumaManana), 30, 140, paint);
+        canvas.drawText("Turno Tarde/Noche: S/. " + String.format(Locale.getDefault(), "%.2f", sumaTarde), 30, 180, paint);
 
         paint.setFakeBoldText(true);
-        canvas.drawText("TOTAL ESPERADO: S/. " + String.format(Locale.getDefault(), "%.2f", totalGeneral), 20, 150, paint);
+        paint.setColor(android.graphics.Color.parseColor("#2E7D32"));
+        canvas.drawText("TOTAL GENERAL ESPERADO: S/. " + String.format(Locale.getDefault(), "%.2f", totalGeneral), 30, 240, paint);
 
+        // Pie de página
+        paint.setColor(android.graphics.Color.GRAY);
         paint.setTextSize(10);
         paint.setFakeBoldText(false);
-        canvas.drawText("Documento generado automáticamente.", 20, 350, paint);
+        canvas.drawText("Generado automáticamente por el Sistema Rico Pan - POS", 30, 550, paint);
 
         document.finishPage(page);
 
-        File dir = getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS);
-        if (dir == null) {
-            dir = getFilesDir(); // Fallback seguro a almacenamiento interno si external storage no está disponible
-        }
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-        File file = new File(dir, "Reporte_RicoPan.pdf");
-
         try {
-            FileOutputStream fos = new FileOutputStream(file);
-            document.writeTo(fos);
-            fos.close();
-            Toast.makeText(this, "PDF Generado con éxito en: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
-        } catch (IOException e) {
+            java.io.OutputStream os = getContentResolver().openOutputStream(uri);
+            if (os != null) {
+                document.writeTo(os);
+                os.close();
+            }
+            document.close();
+            Toast.makeText(this, "¡PDF guardado exitosamente en tu celular!", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Error al crear el PDF: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Error al guardar el PDF: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            document.close();
         }
-
-        document.close();
     }
 }

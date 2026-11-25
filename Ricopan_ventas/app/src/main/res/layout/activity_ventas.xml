@@ -3,71 +3,64 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAF8F5">
+    android:background="#F5EFE6">
 
-    <!-- CABECERA CON GRADIENTE PREMIUM (Igual al Login) -->
-    <View
-        android:id="@+id/viewHeaderBg"
-        android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:background="@drawable/bg_header_gradient" />
-
+    <!-- BLOQUE DE CABECERA GEOMÉTRICO (Estilo BlockStar) -->
     <LinearLayout
-        android:id="@+id/llHeaderContainer"
+        android:id="@+id/llHeaderBlock"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingHorizontal="20dp"
+        android:background="#2E231F"
+        android:paddingHorizontal="16dp"
         android:paddingTop="16dp"
-        android:paddingBottom="12dp">
+        android:paddingBottom="14dp"
+        android:elevation="8dp">
 
-        <!-- TÍTULO Y BOTÓN CERRAR SESIÓN -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="14dp">
+            android:layout_marginBottom="12dp">
 
             <TextView
                 android:id="@+id/tvTituloRol"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="RICO PAN - Vendedor"
-                android:textSize="20sp"
+                android:text="RICO PAN • Vendedor"
+                android:textSize="18sp"
                 android:textStyle="bold"
-                android:textColor="@android:color/white"
+                android:textColor="#FFFFFF"
                 android:letterSpacing="0.03"/>
 
             <Button
                 android:id="@+id/btnCerrarSesion"
                 android:layout_width="wrap_content"
-                android:layout_height="38dp"
-                android:text="Cerrar Sesión"
+                android:layout_height="36dp"
+                android:text="Salir"
                 android:textSize="12sp"
                 android:backgroundTint="#C62828"
                 android:textColor="@android:color/white"
-                app:cornerRadius="12dp"
-                android:elevation="4dp"/>
+                app:cornerRadius="6dp"/>
         </LinearLayout>
 
-        <!-- BUSCADOR ESTILIZADO -->
+        <!-- BUSCADOR BLOQUE -->
         <EditText
             android:id="@+id/etBuscar"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/bg_input_field"
-            android:hint="🔍  Buscar por nombre o código..."
+            android:layout_height="46dp"
+            android:background="#FFFFFF"
+            android:hint="🔍 Buscar producto o código..."
             android:textColor="#222222"
             android:textColorHint="#777777"
-            android:paddingHorizontal="16dp"
+            android:paddingHorizontal="14dp"
             android:inputType="text"
             android:textSize="14sp"
-            android:layout_marginBottom="12dp"
-            android:elevation="4dp"/>
+            android:layout_marginBottom="12dp"/>
 
-        <!-- FILTROS POR CATEGORÍA (Pills) -->
+        <!-- FILTROS POR CATEGORÍA BLOCKSTAR -->
         <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,141 +74,144 @@
                 <Button
                     android:id="@+id/btnFiltroTodos"
                     android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:text="✨ Todos"
-                    android:textSize="12sp"
+                    android:layout_height="36dp"
+                    android:text="TODOS"
+                    android:textSize="11sp"
                     android:textStyle="bold"
                     android:backgroundTint="#8B4513"
                     android:textColor="@android:color/white"
-                    android:layout_marginEnd="8dp"
-                    app:cornerRadius="18dp"/>
+                    android:layout_marginEnd="6dp"
+                    app:cornerRadius="8dp"/>
 
                 <Button
                     android:id="@+id/btnFiltroPanaderia"
                     android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:text="🥖 Panadería"
-                    android:textSize="12sp"
+                    android:layout_height="36dp"
+                    android:text="PANADERÍA"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
                     android:backgroundTint="#FFFFFF"
                     android:textColor="#333333"
-                    android:layout_marginEnd="8dp"
-                    app:cornerRadius="18dp"/>
+                    android:layout_marginEnd="6dp"
+                    app:cornerRadius="8dp"/>
 
                 <Button
                     android:id="@+id/btnFiltroPasteleria"
                     android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:text="🍰 Bocaditos"
-                    android:textSize="12sp"
+                    android:layout_height="36dp"
+                    android:text="BOCADITOS"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
                     android:backgroundTint="#FFFFFF"
                     android:textColor="#333333"
-                    android:layout_marginEnd="8dp"
-                    app:cornerRadius="18dp"/>
+                    android:layout_marginEnd="6dp"
+                    app:cornerRadius="8dp"/>
 
                 <Button
                     android:id="@+id/btnFiltroAbarrotes"
                     android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:text="🥤 Bebidas"
-                    android:textSize="12sp"
+                    android:layout_height="36dp"
+                    android:text="BEBIDAS"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
                     android:backgroundTint="#FFFFFF"
                     android:textColor="#333333"
-                    android:layout_marginEnd="8dp"
-                    app:cornerRadius="18dp"/>
+                    android:layout_marginEnd="6dp"
+                    app:cornerRadius="8dp"/>
 
                 <Button
                     android:id="@+id/btnFiltroCafes"
                     android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:text="☕ Cafés"
-                    android:textSize="12sp"
+                    android:layout_height="36dp"
+                    android:text="CAFÉS"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
                     android:backgroundTint="#FFFFFF"
                     android:textColor="#333333"
-                    android:layout_marginEnd="8dp"
-                    app:cornerRadius="18dp"/>
+                    android:layout_marginEnd="6dp"
+                    app:cornerRadius="8dp"/>
 
                 <Button
                     android:id="@+id/btnFiltroEmbutidos"
                     android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:text="🌭 Embutidos"
-                    android:textSize="12sp"
+                    android:layout_height="36dp"
+                    android:text="EMBUTIDOS"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
                     android:backgroundTint="#FFFFFF"
                     android:textColor="#333333"
-                    android:layout_marginEnd="8dp"
-                    app:cornerRadius="18dp"/>
+                    android:layout_marginEnd="6dp"
+                    app:cornerRadius="8dp"/>
 
                 <Button
                     android:id="@+id/btnFiltroLacteos"
                     android:layout_width="wrap_content"
-                    android:layout_height="38dp"
-                    android:text="🧀 Lácteos"
-                    android:textSize="12sp"
+                    android:layout_height="36dp"
+                    android:text="LÁCTEOS"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
                     android:backgroundTint="#FFFFFF"
                     android:textColor="#333333"
-                    app:cornerRadius="18dp"/>
+                    app:cornerRadius="8dp"/>
             </LinearLayout>
         </HorizontalScrollView>
 
-        <!-- PANEL EXCLUSIVO PARA ADMINISTRADOR -->
+        <!-- PANEL ADMIN BLOCK -->
         <LinearLayout
             android:id="@+id/llAdminPanel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="10dp"
             android:visibility="gone">
 
             <Button
                 android:id="@+id/btnAgregarProducto"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="38dp"
                 android:layout_weight="1"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:textStyle="bold"
-                android:text="+ Producto"
+                android:text="+ PRODUCTO"
                 android:backgroundTint="#FF9800"
                 android:textColor="@android:color/white"
-                android:layout_marginEnd="6dp"
-                app:cornerRadius="12dp"/>
+                android:layout_marginEnd="4dp"
+                app:cornerRadius="8dp"/>
 
             <Button
                 android:id="@+id/btnImportarExcel"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="38dp"
                 android:layout_weight="1.2"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:textStyle="bold"
-                android:text="Cargar Excel"
+                android:text="CARGAR EXCEL"
                 android:backgroundTint="#2E7D32"
                 android:textColor="@android:color/white"
-                android:layout_marginEnd="6dp"
-                app:cornerRadius="12dp"/>
+                android:layout_marginEnd="4dp"
+                app:cornerRadius="8dp"/>
 
             <Button
                 android:id="@+id/btnCierreCaja"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="38dp"
                 android:layout_weight="1"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:textStyle="bold"
-                android:text="Cierre Final"
+                android:text="CIERRE"
                 android:backgroundTint="#C62828"
                 android:textColor="@android:color/white"
-                app:cornerRadius="12dp"/>
+                app:cornerRadius="8dp"/>
         </LinearLayout>
-
     </LinearLayout>
 
     <!-- LISTA DE PRODUCTOS -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/llHeaderContainer"
+        android:layout_below="@id/llHeaderBlock"
         android:layout_above="@id/llBottomCart"
-        android:paddingHorizontal="16dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="8dp"
+        android:padding="12dp"
         android:clipToPadding="false">
 
         <LinearLayout
@@ -227,23 +223,23 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- BARRA INFERIOR DEL CARRITO FLOTANTE -->
+    <!-- BARRA INFERIOR DEL CARRITO BLOCKSTAR -->
     <androidx.cardview.widget.CardView
         android:id="@+id/llBottomCart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         app:cardBackgroundColor="#2E231F"
-        app:cardCornerRadius="22dp"
-        app:cardElevation="12dp"
-        android:layout_marginHorizontal="14dp"
-        android:layout_marginBottom="14dp">
+        app:cardCornerRadius="12dp"
+        app:cardElevation="10dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginBottom="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingHorizontal="22dp"
-            android:paddingVertical="16dp"
+            android:paddingHorizontal="18dp"
+            android:paddingVertical="14dp"
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
@@ -259,9 +255,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TOTAL A PAGAR"
+                    android:text="TOTAL A PAGAR (VER CARRITO)"
                     android:textColor="#D7CCC8"
-                    android:textSize="11sp"
+                    android:textSize="10sp"
                     android:textStyle="bold"
                     android:letterSpacing="0.05"/>
 
@@ -272,30 +268,29 @@
                     android:text="S/. 0.00"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"
-                    android:textSize="26sp"
-                    android:layout_marginTop="2dp"/>
+                    android:textSize="24sp"/>
             </LinearLayout>
 
             <Button
                 android:id="@+id/btnLimpiarCarrito"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
+                android:layout_height="44dp"
                 android:backgroundTint="#C62828"
-                android:text="Limpiar"
+                android:text="LIMPIAR"
                 android:textStyle="bold"
-                android:textSize="14sp"
-                android:layout_marginEnd="8dp"
-                app:cornerRadius="12dp"/>
+                android:textSize="12sp"
+                android:layout_marginEnd="6dp"
+                app:cornerRadius="8dp"/>
 
             <Button
                 android:id="@+id/btnCobrar"
                 android:layout_width="wrap_content"
-                android:layout_height="48dp"
+                android:layout_height="44dp"
                 android:backgroundTint="#2E7D32"
-                android:text="Cobrar"
+                android:text="COBRAR"
                 android:textStyle="bold"
-                android:textSize="16sp"
-                app:cornerRadius="12dp"/>
+                android:textSize="14sp"
+                app:cornerRadius="8dp"/>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>

@@ -809,6 +809,12 @@ public class VentasActivity extends AppCompatActivity {
         LinearLayout innerLayout = new LinearLayout(this);
         innerLayout.setOrientation(LinearLayout.VERTICAL);
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("🛒 Productos en el Carrito");
+        
+        // Creamos la vista del diálogo antes de construirlo para poder cerrar el diálogo actual al eliminar un item
+        final AlertDialog[] dialogHolder = new AlertDialog[1];
+
         for (int i = 0; i < listaCarrito.size(); i++) {
             final int index = i;
             CartItem item = listaCarrito.get(i);
@@ -838,7 +844,11 @@ public class VentasActivity extends AppCompatActivity {
                 tvTotal.setText(String.format(Locale.getDefault(), "S/. %.2f", totalPagar));
                 listaCarrito.remove(index);
                 Toast.makeText(this, item.nombre + " eliminado del carrito", Toast.LENGTH_SHORT).show();
-                // Recargar el diálogo para refrescar la lista
+                
+                // Cerramos el diálogo actual de manera segura antes de refrescarlo
+                if (dialogHolder[0] != null) {
+                    dialogHolder[0].dismiss();
+                }
                 mostrarDialogoCarrito();
             });
 
@@ -855,17 +865,17 @@ public class VentasActivity extends AppCompatActivity {
         scrollView.addView(innerLayout);
         contenedor.addView(scrollView);
 
-        new AlertDialog.Builder(this)
-                .setTitle("🛒 Productos en el Carrito")
-                .setView(contenedor)
-                .setPositiveButton("Cerrar", null)
-                .setNeutralButton("Vaciar Todo", (d, w) -> {
-                    listaCarrito.clear();
-                    totalPagar = 0.0;
-                    tvTotal.setText("S/. 0.00");
-                    Toast.makeText(this, "Carrito vaciado", Toast.LENGTH_SHORT).show();
-                })
-                .show();
+        builder.setView(contenedor);
+        builder.setPositiveButton("Cerrar", null);
+        builder.setNeutralButton("Vaciar Todo", (d, w) -> {
+            listaCarrito.clear();
+            totalPagar = 0.0;
+            tvTotal.setText("S/. 0.00");
+            Toast.makeText(this, "Carrito vaciado", Toast.LENGTH_SHORT).show();
+        });
+
+        dialogHolder[0] = builder.create();
+        dialogHolder[0].show();
     }
 
     private double parsePrecio(com.google.gson.JsonElement element) {

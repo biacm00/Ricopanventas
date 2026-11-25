@@ -122,7 +122,7 @@ public class VentasActivity extends AppCompatActivity {
         }
     }
 
-    Button btnFiltroTodos, btnFiltroPanaderia, btnFiltroPasteleria, btnFiltroAbarrotes, btnFiltroCafes, btnFiltroBocaditos, btnFiltroEmbutidos, btnFiltroLacteos;
+    Button btnFiltroTodos, btnFiltroPanaderia, btnFiltroPasteleria, btnFiltroAbarrotes, btnFiltroCafes, btnFiltroEmbutidos, btnFiltroLacteos;
 
     private void configurarFiltrosCategoria() {
         btnFiltroTodos = findViewById(R.id.btnFiltroTodos);
@@ -130,7 +130,6 @@ public class VentasActivity extends AppCompatActivity {
         btnFiltroPasteleria = findViewById(R.id.btnFiltroPasteleria);
         btnFiltroAbarrotes = findViewById(R.id.btnFiltroAbarrotes);
         btnFiltroCafes = findViewById(R.id.btnFiltroCafes);
-        btnFiltroBocaditos = findViewById(R.id.btnFiltroBocaditos);
         btnFiltroEmbutidos = findViewById(R.id.btnFiltroEmbutidos);
         btnFiltroLacteos = findViewById(R.id.btnFiltroLacteos);
 
@@ -153,9 +152,6 @@ public class VentasActivity extends AppCompatActivity {
             } else if (id == R.id.btnFiltroCafes) {
                 // Cafés e Infusiones: café, manzanilla, té, anís, hierba luisa, cocoa, milo
                 filtrarPorCategoria("caf", "cafe", "cafés", "infusion", "infusión", "manzanilla", "té", "te", "anís", "anis", "hierba luisa", "cocoa", "milo");
-            } else if (id == R.id.btnFiltroBocaditos) {
-                // Se mantiene como filtro rápido de Bocaditos
-                filtrarPorCategoria("bocad", "bocadito", "bocaditos", "empanada", "alfajor", "cono", "milhojas");
             } else if (id == R.id.btnFiltroEmbutidos) {
                 // Embutidos: salchichas, jamonadas, paté, chorizo, hot dog, chicharrón
                 filtrarPorCategoria("embut", "embutido", "salchicha", "pate", "paté", "jamonada", "mortadela", "chorizo", "hot dog", "suiza", "chicharrón", "fiambre");
@@ -177,13 +173,12 @@ public class VentasActivity extends AppCompatActivity {
         if (btnFiltroPasteleria != null) btnFiltroPasteleria.setOnClickListener(listener);
         if (btnFiltroAbarrotes != null) btnFiltroAbarrotes.setOnClickListener(listener);
         if (btnFiltroCafes != null) btnFiltroCafes.setOnClickListener(listener);
-        if (btnFiltroBocaditos != null) btnFiltroBocaditos.setOnClickListener(listener);
         if (btnFiltroEmbutidos != null) btnFiltroEmbutidos.setOnClickListener(listener);
         if (btnFiltroLacteos != null) btnFiltroLacteos.setOnClickListener(listener);
     }
 
     private void resetearEstilosFiltros() {
-        Button[] botones = {btnFiltroTodos, btnFiltroPanaderia, btnFiltroPasteleria, btnFiltroAbarrotes, btnFiltroCafes, btnFiltroBocaditos, btnFiltroEmbutidos, btnFiltroLacteos};
+        Button[] botones = {btnFiltroTodos, btnFiltroPanaderia, btnFiltroPasteleria, btnFiltroAbarrotes, btnFiltroCafes, btnFiltroEmbutidos, btnFiltroLacteos};
         for (Button b : botones) {
             if (b != null) {
                 b.setBackgroundColor(Color.parseColor("#EFEBE6"));

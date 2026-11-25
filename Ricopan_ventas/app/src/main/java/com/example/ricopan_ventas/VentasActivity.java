@@ -388,10 +388,10 @@ public class VentasActivity extends AppCompatActivity {
                     .show();
         });
 
-        // Botón para ir al Cierre de Caja
+        // Botón para ir al Reporte de Caja y Cierre (Historial y Consolidado)
         btnCierreCaja.setOnClickListener(v -> {
-            Intent intentCierre = new Intent(VentasActivity.this, CierreCajaActivity.class);
-            startActivity(intentCierre);
+            Intent intentReportes = new Intent(VentasActivity.this, ReportesCajaActivity.class);
+            startActivity(intentReportes);
         });
     }
 

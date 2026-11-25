@@ -355,7 +355,8 @@
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="16dp"
                     app:cardElevation="4dp"
-                    app:cardBackgroundColor="@android:color/white">
+                    app:cardBackgroundColor="@android:color/white"
+                    android:layout_marginBottom="20dp">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -391,6 +392,20 @@
                             android:textColor="#777777"/>
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
+
+                <!-- BOTÓN PARA IR A REALIZAR EL CIERRE DE CAJA Y ARQUEO -->
+                <Button
+                    android:id="@+id/btnIrACierreCaja"
+                    android:layout_width="match_parent"
+                    android:layout_height="58dp"
+                    android:text="🔒 Realizar Cierre de Caja y Arqueo"
+                    android:backgroundTint="#8B4513"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    app:cornerRadius="14dp"
+                    android:layout_marginBottom="16dp"
+                    android:elevation="6dp"/>
 
             </LinearLayout>
         </ScrollView>

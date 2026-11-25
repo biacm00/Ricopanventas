@@ -18,7 +18,7 @@ import java.util.Locale;
 
 public class ReportesCajaActivity extends AppCompatActivity {
 
-    Button btnTabHistorial, btnTabConsolidado;
+    Button btnTabHistorial, btnTabConsolidado, btnIrACierreCaja;
     Button btnFiltroTodosTurnos, btnFiltroTurno1, btnFiltroTurno2;
     ScrollView layoutHistorial;
     View layoutConsolidado;
@@ -59,6 +59,14 @@ public class ReportesCajaActivity extends AppCompatActivity {
         tvTurno1Detalle = findViewById(R.id.tvTurno1Detalle);
         tvTurno2Monto = findViewById(R.id.tvTurno2Monto);
         tvTurno2Detalle = findViewById(R.id.tvTurno2Detalle);
+        btnIrACierreCaja = findViewById(R.id.btnIrACierreCaja);
+
+        if (btnIrACierreCaja != null) {
+            btnIrACierreCaja.setOnClickListener(v -> {
+                android.content.Intent intent = new android.content.Intent(ReportesCajaActivity.this, CierreCajaActivity.class);
+                startActivity(intent);
+            });
+        }
     }
 
     private void configurarTabs() {

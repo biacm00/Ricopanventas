@@ -7,6 +7,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,7 +29,8 @@ public class VentasActivity extends AppCompatActivity {
     Button btnCobrar, btnLimpiarCarrito, btnAgregarProducto, btnCierreCaja, btnCerrarSesion, btnImportarExcel;
     TextView tvTotal, tvTituloRol;
     LinearLayout llAdminPanel, llListaProductos;
-    androidx.cardview.widget.CardView llBottomCart;
+    androidx.cardview.widget.CardView llBottomCart, llAdminBottomNav;
+    Button btnAdminAdd, btnAdminExcel, btnAdminCierre;
     EditText etBuscar;
 
     double totalPagar = 0.0;
@@ -100,6 +102,10 @@ public class VentasActivity extends AppCompatActivity {
         tvTituloRol = findViewById(R.id.tvTituloRol);
         llAdminPanel = findViewById(R.id.llAdminPanel);
         llBottomCart = findViewById(R.id.llBottomCart);
+        llAdminBottomNav = findViewById(R.id.llAdminBottomNav);
+        btnAdminAdd = findViewById(R.id.btnAdminAdd);
+        btnAdminExcel = findViewById(R.id.btnAdminExcel);
+        btnAdminCierre = findViewById(R.id.btnAdminCierre);
         layoutVerCarrito = findViewById(R.id.layoutVerCarrito);
         btnAgregarProducto = findViewById(R.id.btnAgregarProducto);
         btnImportarExcel = findViewById(R.id.btnImportarExcel);
@@ -242,19 +248,27 @@ public class VentasActivity extends AppCompatActivity {
 
         // Mostrar u ocultar controles según el rol (Administrador vs Vendedor)
         if (esAdmin) {
-            llAdminPanel.setVisibility(View.VISIBLE);
-            if (llBottomCart != null) {
-                llBottomCart.setVisibility(View.GONE); // El administrador no simula ventas
-            }
+            llAdminPanel.setVisibility(View.GONE);
+            if (llBottomCart != null) llBottomCart.setVisibility(View.GONE);
+            if (llAdminBottomNav != null) llAdminBottomNav.setVisibility(View.VISIBLE);
         } else {
             llAdminPanel.setVisibility(View.GONE);
-            if (llBottomCart != null) {
-                llBottomCart.setVisibility(View.VISIBLE); // El vendedor sí realiza ventas
-            }
+            if (llBottomCart != null) llBottomCart.setVisibility(View.VISIBLE);
+            if (llAdminBottomNav != null) llAdminBottomNav.setVisibility(View.GONE);
         }
     }
 
     private void configurarPanelAdmin() {
+        if (btnAdminAdd != null) {
+            btnAdminAdd.setOnClickListener(v -> btnAgregarProducto.performClick());
+        }
+        if (btnAdminExcel != null) {
+            btnAdminExcel.setOnClickListener(v -> btnImportarExcel.performClick());
+        }
+        if (btnAdminCierre != null) {
+            btnAdminCierre.setOnClickListener(v -> btnCierreCaja.performClick());
+        }
+
         btnAgregarProducto.setOnClickListener(v -> {
             LinearLayout contenedor = new LinearLayout(this);
             contenedor.setOrientation(LinearLayout.VERTICAL);
@@ -827,19 +841,14 @@ public class VentasActivity extends AppCompatActivity {
             return;
         }
 
-        LinearLayout contenedor = new LinearLayout(this);
-        contenedor.setOrientation(LinearLayout.VERTICAL);
-        contenedor.setPadding(30, 20, 30, 10);
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_carrito, null);
+        AlertDialog dialog = new AlertDialog.Builder(this).setView(dialogView).create();
 
-        ScrollView scrollView = new ScrollView(this);
-        LinearLayout innerLayout = new LinearLayout(this);
-        innerLayout.setOrientation(LinearLayout.VERTICAL);
+        LinearLayout llDialogCarritoItems = dialogView.findViewById(R.id.llDialogCarritoItems);
+        Button btnDialogVaciar = dialogView.findViewById(R.id.btnDialogVaciar);
+        Button btnDialogCerrar = dialogView.findViewById(R.id.btnDialogCerrar);
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("🛒 Productos en el Carrito");
-        
-        // Creamos la vista del diálogo antes de construirlo para poder cerrar el diálogo actual al eliminar un item
-        final AlertDialog[] dialogHolder = new AlertDialog[1];
+        llDialogCarritoItems.removeAllViews();
 
         for (int i = 0; i < listaCarrito.size(); i++) {
             final int index = i;
@@ -848,20 +857,20 @@ public class VentasActivity extends AppCompatActivity {
             LinearLayout row = new LinearLayout(this);
             row.setOrientation(LinearLayout.HORIZONTAL);
             row.setGravity(Gravity.CENTER_VERTICAL);
-            row.setPadding(0, 12, 0, 12);
+            row.setPadding(0, 10, 0, 10);
 
             TextView tvDesc = new TextView(this);
             tvDesc.setText(item.cantidad + "x " + item.nombre + "\nS/. " + String.format(Locale.getDefault(), "%.2f", item.precio));
             tvDesc.setTextSize(14);
-            tvDesc.setTextColor(Color.parseColor("#333333"));
+            tvDesc.setTextColor(Color.parseColor("#222222"));
             tvDesc.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
 
             Button btnEliminarItem = new Button(this);
-            btnEliminarItem.setText("❌");
+            btnEliminarItem.setText("✕");
             btnEliminarItem.setTextSize(12);
-            btnEliminarItem.setBackgroundColor(Color.parseColor("#D32F2F"));
+            btnEliminarItem.setBackgroundColor(Color.parseColor("#C62828"));
             btnEliminarItem.setTextColor(Color.WHITE);
-            LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(90, 90);
+            LinearLayout.LayoutParams btnParams = new LinearLayout.LayoutParams(80, 80);
             btnEliminarItem.setLayoutParams(btnParams);
 
             btnEliminarItem.setOnClickListener(v -> {
@@ -869,39 +878,32 @@ public class VentasActivity extends AppCompatActivity {
                 if (totalPagar < 0) totalPagar = 0.0;
                 tvTotal.setText(String.format(Locale.getDefault(), "S/. %.2f", totalPagar));
                 listaCarrito.remove(index);
-                Toast.makeText(this, item.nombre + " eliminado del carrito", Toast.LENGTH_SHORT).show();
-                
-                // Cerramos el diálogo actual de manera segura antes de refrescarlo
-                if (dialogHolder[0] != null) {
-                    dialogHolder[0].dismiss();
-                }
+                Toast.makeText(this, item.nombre + " eliminado", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
                 mostrarDialogoCarrito();
             });
 
             row.addView(tvDesc);
             row.addView(btnEliminarItem);
-            innerLayout.addView(row);
+            llDialogCarritoItems.addView(row);
 
             View divider = new View(this);
             divider.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
-            divider.setBackgroundColor(Color.parseColor("#E0E0E0"));
-            innerLayout.addView(divider);
+            divider.setBackgroundColor(Color.parseColor("#E0C0A8"));
+            llDialogCarritoItems.addView(divider);
         }
 
-        scrollView.addView(innerLayout);
-        contenedor.addView(scrollView);
-
-        builder.setView(contenedor);
-        builder.setPositiveButton("Cerrar", null);
-        builder.setNeutralButton("Vaciar Todo", (d, w) -> {
+        btnDialogVaciar.setOnClickListener(v -> {
             listaCarrito.clear();
             totalPagar = 0.0;
             tvTotal.setText("S/. 0.00");
             Toast.makeText(this, "Carrito vaciado", Toast.LENGTH_SHORT).show();
+            dialog.dismiss();
         });
 
-        dialogHolder[0] = builder.create();
-        dialogHolder[0].show();
+        btnDialogCerrar.setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
     }
 
     private double parsePrecio(com.google.gson.JsonElement element) {
